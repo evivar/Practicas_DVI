@@ -11,4 +11,3 @@ Repositorio con los distintos ejercicios y prácticas desarrollados a lo largo d
   1. **· Práctica 1 - Memory Game: **
    * [Código](https://github.com/evivar/Practicas_DVI/tree/master/MemoryGame)
    * [Web](https://evivar.github.io/Practicas_DVI/MemoryGame/index.html)
-
