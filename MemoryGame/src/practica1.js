@@ -62,7 +62,7 @@ MemoryGame = function (gs) {
      * Bucle principal del juego
      */
     this.loop = function () {
-        setInterval(this.draw, 16);
+        setInterval(this.draw, 16); /* Se puede usar el requestAnimationFrame(Game.loop)*/
     }
 
     /**
@@ -85,10 +85,6 @@ MemoryGame = function (gs) {
                     if (flippedCard === undefined) {
                         flippedCard = cardId;
                     }
-                    else if (flippedCard === cardId) {
-                        flippedCard = undefined;
-                        text = "Memory Game";
-                    }
                     else {
                         if (board[cardId].pos !== board[flippedCard].pos) {
                             if (board[cardId].compareTo(board[flippedCard])) {
@@ -101,7 +97,7 @@ MemoryGame = function (gs) {
                         }
                     }
                 }
-                else {
+                else { // Preguntar si esto esta bien o no
                     var reset = confirm("Ya has ganado, ¿quieres jugar de nuevo?")
                     if (reset == true) {
                         location.reload();
@@ -110,7 +106,8 @@ MemoryGame = function (gs) {
             }
         }
         else {
-            alert("Eso no es una carta, ten cuidado donde pones el ratón");
+            // Preguntar si lo dejo o no
+            console.log("Eso no es una carta, ten cuidado donde pones el ratón");
         }
     }
 
@@ -193,9 +190,6 @@ MemoryGameCard = function (id) {
     this.flip = function () {
         if (this.state === 0) {
             this.state = 1;
-        }
-        else {
-            this.state = 0;
         }
     }
 
