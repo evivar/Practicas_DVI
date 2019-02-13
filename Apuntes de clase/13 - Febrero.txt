@@ -1,0 +1,40 @@
+var OBJECT_PLAYER = 1, -> 0001
+    OBJECT_PLAYER_PROJECTILE = 2, -> 0010
+    OBJECT_ENEMY = 4, -> 0100
+    OBJECT_ENEMY_PROJECTILE = 8, -> 1000
+    OBJECT_POWERUP = 16;
+
+Son potencias de dos para poder usar un OR logico y ver las colisiones con la operacion AND lógica
+Quiero colisionar, recorro la mascara de los objetos 
+
+Para mirar las colisiones se emplea el bounding box a ver si estan superpuestos o overlapeados
+this.objects = []; -> Lista de los objetos
+this.cnt = {}; -> De cada tipo, cuantos objetos tengo
+
+Lista toDelete para marcar los objetos que quiero borrar y los borra en
+la funcion this.finalizeRemoved
+
+Tiene funciones que se pueden aplicar a todos los objetos que tengo en la 
+coleccion
+    - iterate(funcion) -> Aplica a todos los objetos de la coleccion
+    - detect(funcion) -> Solo lo aplica al primer objeto de la coleccion
+
+step(dt) -> 
+
+draw(ctx) ->
+
+playGame -> Crea un tablero, crea la nave del jugador y se lo añade al Game
+
+COLISIONES
+
+Se hacen viendo si hay overlap entre dos bounding boxes("Recuadros" de cada objeto)
+
+this.overlap = function(o1,o2) { // Echarle un ojo
+    return !((o1.y+o1.h-1 < o2.y) || (o1.y > o2.y+o2.h-1) ||
+            (o1.x+o1.w-1 < o2.x) || (o1.x > o2.x+o2.w-1));
+};
+
+
+ATENCION -> Esta funcion lo hace al reves, es decir, va descartando
+
+La funcion de colision llama al collide
