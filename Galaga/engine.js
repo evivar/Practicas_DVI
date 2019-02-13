@@ -75,11 +75,18 @@ var Game = new function () {
     }, false);
   }
 
+  
+  var maxTime = 30 / 1000;
+  var lastTime = new Date().getTime();
   this.loop = function () {
-    var dt = 30 / 1000;
     // Cada pasada borramos el canvas
     Game.ctx.fillStyle = "#000";
     Game.ctx.fillRect(0, 0, Game.width, Game.height);
+    var curTime = new Date().getTime();
+    requestAnimationFrame(Game.loop);
+    var dt = (curTime - lastTime)/1000;
+    if(dt > maxTime) { dt = maxTime; }
+
     // y actualizamos y dibujamos todas las entidades
     for (var i = 0, len = boards.length; i < len; i++) {
       if (boards[i]) {
@@ -87,9 +94,8 @@ var Game = new function () {
         boards[i].draw(Game.ctx);
       }
     }
-    setTimeout(Game.loop, 30);
+    lastTime = curTime;
   };
-
 
   // Change an active game board
   this.setBoard = function (num, board) {
@@ -179,17 +185,16 @@ var GameBoard = function () {
   };
 };
 
-var FrameRate = function () {
+var PrintMsg = function (message) {
 
   this.draw = function (ctx) {
     ctx.save();
     ctx.font = "bold 18px arial";
     ctx.fillStyle = "#FFFFFF";
 
-    var txt = "Holi";
-
-    ctx.fillText(txt, 10, 20);
+    ctx.fillText(message, 30, 20);
   }
 
+  this.step = function(dt){};
 
 };

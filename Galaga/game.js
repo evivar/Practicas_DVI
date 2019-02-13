@@ -24,11 +24,13 @@ var startGame = function () {
     Game.setBoard(0, new TitleScreen("Alien Invasion",
         "Press fire to start playing",
         playGame));
+        Game.setBoard(1, new PrintMsg("HOLA") );
 }
 var playGame = function () {
     var board = new GameBoard();
     board.add(new PlayerShip());
     Game.setBoard(0, board);
+    Game.setBoard(1 , new PrintMsg("HOLA"));
 };
 
 // Indica que se llame al método de inicialización una vez
