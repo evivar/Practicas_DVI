@@ -134,7 +134,7 @@ dfn {
 
 h1 {
   margin: 0.67em 0;
-  font-size: 2em;
+  font-size: 20px;
 }
 
 /**
@@ -456,11 +456,12 @@ header {
 }
 
 header h1 {
-  width: 540px;
+  width: 600px;
   margin-top: 0;
   margin-bottom: 0.2em;
-  font-size: 72px;
+  font-size: 50px;
   font-weight: normal;
+  text-align: center;
   line-height: 1;
   color: #fff;
   letter-spacing: -1px;
@@ -606,6 +607,19 @@ form {
   padding: 20px;
   background: #f2f2f2;
 
+}
+
+.info{
+  text-align: center;
+}
+
+.right{
+  float: right;
+}
+
+.titulo{
+  font-size: 35px;
+  text-align: center;
 }
 
 
