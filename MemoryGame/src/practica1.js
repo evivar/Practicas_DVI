@@ -168,7 +168,7 @@ MemoryGame = function (gs) {
  * Constructora de las cartas del juego. Recibe como parámetro el nombre del sprite que representa la carta.
  * Dos cartas serán iguales si tienen el mismo sprite.
  * La carta puede guardar la posición que ocupa dentro del tablero para luego poder dibujarse
- * @param {string} id Nombre del sprite que representa la carta
+ * @param {string} id Nombre del sprite que representa la carta aa
  */
 MemoryGameCard = function (id) {
 
