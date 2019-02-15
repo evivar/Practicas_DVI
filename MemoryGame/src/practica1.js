@@ -26,6 +26,7 @@ MemoryGame = function (gs) {
 
     this.win = false;
 
+    this.clickEnabled = true;
 
     // Funciones
     /**
@@ -62,9 +63,10 @@ MemoryGame = function (gs) {
      * Bucle principal del juego
      */
     this.loop = function () {
-        //setInterval(this.draw, 16); /* Se puede usar el requestAnimationFrame(Game.loop)*/
         game.draw();
-        requestAnimationFrame(game.loop);
+        if (game.clickEnabled) {
+            requestAnimationFrame(game.loop);
+        }
     }
 
     /**
@@ -80,20 +82,21 @@ MemoryGame = function (gs) {
      * @param {} cardId - Carta seleccionada
      */
     this.onClick = function (cardId) {
-        if (cardId !== null && cardId > -1) {
-            if (game.board[cardId].id !== 2 && game.board[cardId] !== undefined && !game.flipping) {
+        if (cardId !== null && cardId > -1 && game.clickEnabled) {
+            if (game.board[cardId].state !== 2 && game.board[cardId] !== undefined && !game.flipping) {
                 if (!game.win) {
                     game.board[cardId].flip();
                     if (game.flippedCard === undefined) {
                         game.flippedCard = cardId;
                     } else {
                         if (game.board[cardId].pos !== game.board[game.flippedCard].pos) {
+                            game.disableOnClick();
                             if (game.board[cardId].compareTo(game.board[game.flippedCard])) {
                                 this.matchFound(cardId);
                                 this.youWin(cardId);
                             } else {
                                 this.tryAgain(cardId);
-                            }
+                            } 
                         }
                     }
                 } else { // Preguntar si esto esta bien o no
@@ -103,8 +106,14 @@ MemoryGame = function (gs) {
                     }
                 }
             }
-        } else {
-            // Preguntar si lo dejo o no
+            else if (game.board[cardId].state === 2) {
+                console.log("Has seleccionado una carta que ya está encontrada, elige otra carta distinta");
+            }
+        }
+        else if (!game.clickEnable) {
+            console.log("Espera a que las cartas esten dadas la vuelta impaciente");
+        }
+        else {
             console.log("Eso no es una carta, ten cuidado donde pones el ratón");
         }
     }
@@ -150,13 +159,13 @@ MemoryGame = function (gs) {
      * @param {} cardId - Carta seleccionada
      */
     this.tryAgain = function (cardId) {
-        game.text = "Try again";
-        flipping = true;
+        game.text = "Wrong!!";
+        game.flipping = true;
         var flipBack = setInterval(unflip, 500);
         function unflip() {
             if (game.flippedCard === undefined || cardId === undefined) {
                 clearInterval(flipBack);
-                game.text = "Memory Game";
+                game.text = "Try Again";
             }
             else {
                 if (game.board[game.flippedCard].state != 2) {
@@ -170,6 +179,20 @@ MemoryGame = function (gs) {
             }
         }
 
+    }
+
+    /**
+     * Funcion que "activa" la funcion onClick()
+     */
+    this.enableOnClick = function () {
+        game.clickEnable = true;
+    }
+
+    /**
+     * Funcion que "desactiva" la funcion onClick() para prevenir errores mientras se ejecuta la funcion tryAgain(cardId);
+     */
+    this.disableOnClick = function () {
+        game.clickEnable = false;
     }
 
 };
