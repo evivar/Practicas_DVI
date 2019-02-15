@@ -62,9 +62,9 @@ MemoryGame = function (gs) {
      * Bucle principal del juego
      */
     this.loop = function () {
-        setInterval(this.draw, 16); /* Se puede usar el requestAnimationFrame(Game.loop)*/
-        /*game.draw();
-        requestAnimationFrame(game.loop);*/
+        //setInterval(this.draw, 16); /* Se puede usar el requestAnimationFrame(Game.loop)*/
+        game.draw();
+        requestAnimationFrame(game.loop);
     }
 
     /**
@@ -151,13 +151,25 @@ MemoryGame = function (gs) {
      */
     this.tryAgain = function (cardId) {
         game.text = "Try again";
-        game.flipping = true;
-        setInterval(function () {
-            game.board[game.flippedCard].state = 0;
-            game.board[cardId].state = 0;
-            game.flippedCard = undefined;
-            game.flipping = false;
-        }, 500);
+        flipping = true;
+        var flipBack = setInterval(unflip, 500);
+        function unflip() {
+            if (game.flippedCard === undefined || cardId === undefined) {
+                clearInterval(flipBack);
+                game.text = "Memory Game";
+            }
+            else {
+                if (game.board[game.flippedCard].state != 2) {
+                    game.board[game.flippedCard].state = 0;
+                }
+                if (game.board[cardId].state != 2) {
+                    game.board[cardId].state = 0;
+                }
+                game.flippedCard = undefined;
+                game.flipping = false;
+            }
+        }
+
     }
 
 };

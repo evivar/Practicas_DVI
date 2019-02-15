@@ -26,6 +26,8 @@ MemoryGame = function (gs) {
 
     var win = false;
 
+    var clickEnable = true;
+
 
     // Funciones
     /**
@@ -80,7 +82,7 @@ MemoryGame = function (gs) {
      * @param {} cardId - Carta seleccionada
      */
     this.onClick = function (cardId) {
-        if (cardId !== null && cardId > -1) {
+        if (cardId !== null && cardId > -1 && clickEnable === true) {
             if (board[cardId].state !== 2 && board[cardId] !== undefined && !flipping) {
                 if (!win) {
                     board[cardId].flip();
@@ -159,6 +161,7 @@ MemoryGame = function (gs) {
                 text = "Memory Game";
             }
             else {
+                
                 if (board[flippedCard].state != 2) {
                     board[flippedCard].state = 0;
                 }
