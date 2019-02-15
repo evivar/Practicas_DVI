@@ -12,19 +12,19 @@ MemoryGame = function (gs) {
 
     // Variables
 
-    this.board = new Array(16);
+    var board = new Array(16);
 
-    this.cards = ["8-ball", "potato", "dinosaur", "kronos", "rocket", "unicorn", "guy", "zeppelin"]
+    var cards = ["8-ball", "potato", "dinosaur", "kronos", "rocket", "unicorn", "guy", "zeppelin"]
 
-    this.text = "Memory Game";
+    var text = "Memory Game";
 
-    this.cardsFound = 0;
+    var cardsFound = 0;
 
-    this.flippedCard = undefined;
+    var flippedCard = undefined;
 
-    this.flipping = false;
+    var flipping = false;
 
-    this.win = false;
+    var win = false;
 
 
     // Funciones
@@ -34,27 +34,27 @@ MemoryGame = function (gs) {
      */
     this.initGame = function () {
         var grid = new Array();
-        for (var i = 0; i < game.board.length; i++) {
+        for (var i = 0; i < board.length; i++) {
             grid.push(i);
         }
-        for (var i = 0; i < game.board.length / 2; i++) {
+        for (var i = 0; i < board.length / 2; i++) {
             // Añado la primera carta
             var pos = this.randomize(grid);
-            game.board[pos] = new MemoryGameCard(game.cards[i]);
+            board[pos] = new MemoryGameCard(cards[i]);
 
             // Añado la segunda carta
             var pos = this.randomize(grid);
-            game.board[pos] = new MemoryGameCard(game.cards[i]);
+            board[pos] = new MemoryGameCard(cards[i]);
         }
-        game.loop();
+        this.loop();
     }
     /**
      * Funcion que primero dibuja el mensaje correspondiente en su lugar y pinta las cartas en el tablero
      */
     this.draw = function () {
-        gs.drawMessage(game.text);
-        for (var i = 0; i < game.board.length; i++) {
-            game.board[i].draw(gs, i);
+        gs.drawMessage(text);
+        for (var i = 0; i < board.length; i++) {
+            board[i].draw(gs, i);
         }
     }
 
@@ -62,9 +62,9 @@ MemoryGame = function (gs) {
      * Bucle principal del juego
      */
     this.loop = function () {
-        setInterval(this.draw, 16); /* Se puede usar el requestAnimationFrame(Game.loop)*/
-        /*game.draw();
-        requestAnimationFrame(game.loop);*/
+        setInterval(this.draw, 16);
+        /*draw();
+        requestAnimationFrame(loop);*/
     }
 
     /**
@@ -81,14 +81,14 @@ MemoryGame = function (gs) {
      */
     this.onClick = function (cardId) {
         if (cardId !== null && cardId > -1) {
-            if (game.board[cardId].id !== 2 && game.board[cardId] !== undefined && !game.flipping) {
-                if (!game.win) {
-                    game.board[cardId].flip();
-                    if (game.flippedCard === undefined) {
-                        game.flippedCard = cardId;
+            if (board[cardId].state !== 2 && board[cardId] !== undefined && !flipping) {
+                if (!win) {
+                    board[cardId].flip();
+                    if (flippedCard === undefined) {
+                        flippedCard = cardId;
                     } else {
-                        if (game.board[cardId].pos !== game.board[game.flippedCard].pos) {
-                            if (game.board[cardId].compareTo(game.board[game.flippedCard])) {
+                        if (board[cardId].pos !== board[flippedCard].pos) {
+                            if (board[cardId].compareTo(board[flippedCard])) {
                                 this.matchFound(cardId);
                                 this.youWin(cardId);
                             } else {
@@ -126,11 +126,11 @@ MemoryGame = function (gs) {
      * @param {} cardId - Carta seleccionada
      */
     this.matchFound = function (cardId) {
-        game.text = "Match found!!"
-        game.board[cardId].found();
-        game.board[game.flippedCard].found();
-        game.cardsFound++;
-        game.flippedCard = undefined;
+        text = "Match found!!"
+        board[cardId].found();
+        board[flippedCard].found();
+        cardsFound++;
+        flippedCard = undefined;
     }
 
     /**
@@ -138,9 +138,9 @@ MemoryGame = function (gs) {
      * @param {} cardId - Carta seleccionada
      */
     this.youWin = function (cardId) {
-        if (game.cardsFound === game.board.length / 2) {
-            game.text = "You win!!";
-            game.win = true;
+        if (cardsFound === board.length / 2) {
+            text = "You win!!";
+            win = true;
         }
     }
 
@@ -150,14 +150,26 @@ MemoryGame = function (gs) {
      * @param {} cardId - Carta seleccionada
      */
     this.tryAgain = function (cardId) {
-        game.text = "Try again";
-        game.flipping = true;
-        setInterval(function () {
-            game.board[game.flippedCard].state = 0;
-            game.board[cardId].state = 0;
-            game.flippedCard = undefined;
-            game.flipping = false;
-        }, 500);
+        text = "Try again";
+        flipping = true;
+        var flipBack = setInterval(unflip, 500);
+        function unflip() {
+            if (flippedCard === undefined || cardId === undefined) {
+                clearInterval(flipBack);
+                text = "Memory Game";
+            }
+            else {
+                if (board[flippedCard].state != 2) {
+                    board[flippedCard].state = 0;
+                }
+                if (board[cardId].state != 2) {
+                    board[cardId].state = 0;
+                }
+                flippedCard = undefined;
+                flipping = false;
+            }
+        }
+
     }
 
 };
@@ -178,7 +190,7 @@ MemoryGameCard = function (id) {
 
     this.state = 0;
 
-    this.pos = undefined;
+    var pos = undefined;
 
     /**
      * Funcion que "da la vuelta" a las cartas cambiando el estado
