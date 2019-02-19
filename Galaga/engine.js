@@ -40,7 +40,11 @@ var Game = new function () {
   // Variables
   var boards = [];
   // le asignamos un nombre lógico a cada tecla que nos interesa
-  var KEY_CODES = { 37: 'left', 39: 'right', 32: 'fire' };
+  var KEY_CODES = {
+    37: 'left',
+    39: 'right',
+    32: 'fire'
+  };
 
   this.keys = {};
   //Funciones
@@ -75,7 +79,7 @@ var Game = new function () {
     }, false);
   }
 
-  
+
   var maxTime = 30 / 1000;
   var lastTime = new Date().getTime();
   this.loop = function () {
@@ -84,8 +88,10 @@ var Game = new function () {
     Game.ctx.fillRect(0, 0, Game.width, Game.height);
     var curTime = new Date().getTime();
     requestAnimationFrame(Game.loop);
-    var dt = (curTime - lastTime)/1000;
-    if(dt > maxTime) { dt = maxTime; }
+    var dt = (curTime - lastTime) / 1000;
+    if (dt > maxTime) {
+      dt = maxTime;
+    }
 
     // y actualizamos y dibujamos todas las entidades
     for (var i = 0, len = boards.length; i < len; i++) {
@@ -136,7 +142,9 @@ var GameBoard = function () {
     return obj;
   };
   // Reset the list of removed objects
-  this.resetRemoved = function () { this.removed = []; };
+  this.resetRemoved = function () {
+    this.removed = [];
+  };
   // Mark an object for removal
   this.remove = function (obj) {
     var idx = this.removed.indexOf(obj);
@@ -195,6 +203,6 @@ var PrintMsg = function (message) {
     ctx.fillText(message, 30, 20);
   }
 
-  this.step = function(dt){};
+  this.step = function (dt) {};
 
 };
