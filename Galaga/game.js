@@ -1,13 +1,61 @@
 // Variables
 var sprites = {
-    ship: { sx: 0, sy: 0, w: 37, h: 42, frames: 1 },
-    enemy_ship_purple: { sx: 37, sy: 0, w: 42, h: 43, frames: 1 },
-    enemy_ship_orange: { sx: 79, sy: 0, w: 37, h: 43, frames: 1 },
-    enemy_ship_gray: { sx: 116, sy: 0, w: 42, h: 43, frames: 1 },
-    enemy_green_ball: { sx: 158, sy: 0, w: 32, h: 33, frames: 1 },
-    player_missile: { sx: 0, sy: 42, w: 7, h: 20, frames: 1 },
-    enemy_missile: { sx: 9, sy: 42, w: 3, h: 20, frames: 1 },
-    explosion: { sx: 0, sy: 64, w: 64, h: 64, frames: 12 }
+    ship: {
+        sx: 0,
+        sy: 0,
+        w: 37,
+        h: 42,
+        frames: 1
+    },
+    enemy_ship_purple: {
+        sx: 37,
+        sy: 0,
+        w: 42,
+        h: 43,
+        frames: 1
+    },
+    enemy_ship_orange: {
+        sx: 79,
+        sy: 0,
+        w: 37,
+        h: 43,
+        frames: 1
+    },
+    enemy_ship_gray: {
+        sx: 116,
+        sy: 0,
+        w: 42,
+        h: 43,
+        frames: 1
+    },
+    enemy_green_ball: {
+        sx: 158,
+        sy: 0,
+        w: 32,
+        h: 33,
+        frames: 1
+    },
+    player_missile: {
+        sx: 0,
+        sy: 42,
+        w: 7,
+        h: 20,
+        frames: 1
+    },
+    enemy_missile: {
+        sx: 9,
+        sy: 42,
+        w: 3,
+        h: 20,
+        frames: 1
+    },
+    explosion: {
+        sx: 0,
+        sy: 64,
+        w: 64,
+        h: 64,
+        frames: 12
+    }
 };
 
 var OBJECT_PLAYER = 1,
@@ -24,13 +72,13 @@ var startGame = function () {
     Game.setBoard(0, new TitleScreen("Alien Invasion",
         "Press fire to start playing",
         playGame));
-        Game.setBoard(1, new PrintMsg("HOLA") );
+    Game.setBoard(1, new PrintMsg("HOLA"));
 }
 var playGame = function () {
     var board = new GameBoard();
     board.add(new PlayerShip());
     Game.setBoard(0, board);
-    Game.setBoard(1 , new PrintMsg("HOLA"));
+    Game.setBoard(1, new PrintMsg("HOLA"));
 };
 
 // Indica que se llame al método de inicialización una vez
@@ -49,12 +97,17 @@ var PlayerShip = function () {
     this.vx = 0;
     this.maxVel = 200;
     this.step = function (dt) {
-        if (Game.keys['left']) { this.vx = -this.maxVel; }
-        else if (Game.keys['right']) { this.vx = this.maxVel; }
-        else { this.vx = 0; }
+        if (Game.keys['left']) {
+            this.vx = -this.maxVel;
+        } else if (Game.keys['right']) {
+            this.vx = this.maxVel;
+        } else {
+            this.vx = 0;
+        }
         this.x += this.vx * dt;
-        if (this.x < 0) { this.x = 0; }
-        else if (this.x > Game.width - this.w) {
+        if (this.x < 0) {
+            this.x = 0;
+        } else if (this.x > Game.width - this.w) {
             this.x = Game.width - this.w
         }
     }
@@ -82,11 +135,11 @@ var PlayerShip = function () {
 function drawExplosion_Low2High() {
     var fire = 13;
     var id = setInterval(explosion, 50);
+
     function explosion() {
         if (fire == -1) {
             clearInterval(id);
-        }
-        else {
+        } else {
             fire--;
             SpriteSheet.render(ctx, "explosion", 150, 100, fire);
         }
@@ -96,14 +149,13 @@ function drawExplosion_Low2High() {
 function drawExplosion_High2Low() {
     var fire = 0;
     var id = setInterval(explosion, 50);
+
     function explosion() {
         if (fire > 12) {
             clearInterval(id);
-        }
-        else {
+        } else {
             fire++;
             SpriteSheet.render(ctx, "explosion", 250, 100, fire);
         }
     }
 }
-

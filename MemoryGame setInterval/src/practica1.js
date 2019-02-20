@@ -104,15 +104,12 @@ MemoryGame = function (gs) {
                         location.reload();
                     }
                 }
-            }
-            else if(board[cardId].state === 2){
+            } else if (board[cardId].state === 2) {
                 console.log("Has seleccionado una carta que ya está encontrada, elige otra carta distinta");
             }
-        }
-        else if (!clickEnable) {
+        } else if (!clickEnable) {
             console.log("Espera a que las cartas esten dadas la vuelta impaciente");
-        }
-        else {
+        } else {
             console.log("Eso no es una carta, ten cuidado donde pones el ratón");
         }
     }
@@ -161,13 +158,13 @@ MemoryGame = function (gs) {
         text = "Wrong!!";
         flipping = true;
         var flipBack = setInterval(unflip, 500);
+
         function unflip() {
             if (flippedCard === undefined || cardId === undefined) {
                 clearInterval(flipBack);
                 game.enableOnClick();
                 text = "Try Again";
-            }
-            else {
+            } else {
                 if (board[flippedCard].state != 2) {
                     board[flippedCard].state = 0;
                 }
@@ -183,14 +180,14 @@ MemoryGame = function (gs) {
     /**
      * Funcion que "activa" la funcion onClick()
      */
-    this.enableOnClick = function(){
+    this.enableOnClick = function () {
         clickEnable = true;
     }
 
     /**
      * Funcion que "desactiva" la funcion onClick() para prevenir errores mientras se ejecuta la funcion tryAgain(cardId);
      */
-    this.disableOnClick = function(){
+    this.disableOnClick = function () {
         clickEnable = false;
     }
 

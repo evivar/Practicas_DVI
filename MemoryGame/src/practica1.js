@@ -29,7 +29,7 @@ MemoryGame = function (gs) {
     this.clickEnabled = true;
 
     // Funciones
-    
+
     /**
      * Inicia el juego, creando el tablero y añadiendo aleatoreamente las parejas de cartas,
      * para luego empezar el bucle principal del juego
@@ -104,15 +104,12 @@ MemoryGame = function (gs) {
                         location.reload();
                     }
                 }
-            }
-            else if (game.board[cardId].state === 2) {
+            } else if (game.board[cardId].state === 2) {
                 console.log("Has seleccionado una carta que ya está encontrada, elige otra carta distinta");
             }
-        }
-        else if (!game.clickEnabled) {
+        } else if (!game.clickEnabled) {
             console.log("Espera a que las cartas esten dadas la vuelta impaciente");
-        }
-        else {
+        } else {
             console.log("Eso no es una carta, ten cuidado donde pones el ratón");
         }
     }
@@ -161,14 +158,14 @@ MemoryGame = function (gs) {
         game.text = "Wrong!!";
         game.flipping = true;
         var flipBack = setInterval(unflip, 500);
+
         function unflip() {
             if (game.flippedCard === undefined || cardId === undefined) {
                 clearInterval(flipBack);
                 game.text = "Try Again";
                 game.clickEnabled = true;
 
-            }
-            else {
+            } else {
                 if (game.board[game.flippedCard].state != 2) {
                     game.board[game.flippedCard].state = 0;
                 }
