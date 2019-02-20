@@ -28,6 +28,8 @@ MemoryGame = function (gs) {
 
     this.clickEnabled = true;
 
+    this.hc = new Audio("HotelCalifornia.mp3");
+
     // Funciones
 
     /**
@@ -36,6 +38,7 @@ MemoryGame = function (gs) {
      */
     this.initGame = function () {
         var grid = new Array();
+        game.hc.loop = true;
         for (var i = 0; i < game.board.length; i++) {
             grid.push(i);
         }
@@ -48,6 +51,7 @@ MemoryGame = function (gs) {
             var pos = this.randomize(grid);
             game.board[pos] = new MemoryGameCard(game.cards[i]);
         }
+        game.hc.play();
         game.loop();
     }
     /**
