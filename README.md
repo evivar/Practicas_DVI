@@ -8,3 +8,6 @@ Repositorio con los distintas prácticas desarrollados a lo largo de la asignatu
       * [Código con requestAnimationFrame()](https://github.com/evivar/Practicas_DVI/tree/master/MemoryGame)
       * [Web con setInterval()](https://evivar.github.io/Practicas_DVI/MemoryGame%20setInterval/index.html)
       * [Web con requestAnimationFrame()](https://evivar.github.io/Practicas_DVI/MemoryGame/index.html)
+  2. **Práctica 2 - Frogger:**
+      * [Código](https://github.com/evivar/Practicas_DVI/tree/master/Frogger)
+      * [Web](https://evivar.github.io/Practicas_DVI/Frogger/index.html)
