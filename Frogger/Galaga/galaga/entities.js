@@ -49,7 +49,7 @@ Sprite.prototype.hit = function(damage) {
 
 var PlayerShip = function() { 
 
-  this.setup('ship', { vx: 0, frame: 0, reloadTime: 0.25, maxVel: 200 });
+  this.setup('ship', { vx: 0, vy: 0, frame: 0, reloadTime: 0.25, maxVel: 200 });
 
    this.x = Game.width/2 - this.w / 2;
    this.y = Game.height - 10 - this.h;
@@ -60,13 +60,21 @@ var PlayerShip = function() {
    this.step = function(dt) {
      if(Game.keys['left']) { this.vx = -this.maxVel; }
      else if(Game.keys['right']) { this.vx = this.maxVel; }
-     else { this.vx = 0; }
+     else if(Game.keys['up']) { this.vy = this.maxVel; }
+     else if(Game.keys['down']) { this.vy = -this.maxVel; }
+     else { this.vx = 0; this.vy = 0; }
 
      this.x += this.vx * dt;
+     this.y += this.vy * dt;
 
      if(this.x < 0) { this.x = 0; }
      else if(this.x > Game.width - this.w) { 
        this.x = Game.width - this.w 
+     }
+
+     if(this.y < 0) { this.y = 0; }
+     else if(this.y > Game.height - this.h) { 
+       this.y = Game.height - this.h
      }
 
     this.reload-=dt;
@@ -116,7 +124,7 @@ Explosion.prototype.step = function(dt) {
 
 
 var PlayerMissile = function(x,y) {
-  this.setup('missile',{ vy: -700, damage: 10 });
+  this.setup('enemy_circle',{ vy: -700, damage: 10 });
   this.x = x - this.w/2; 
   this.y = y - this.h; 
 };
