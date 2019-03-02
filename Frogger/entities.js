@@ -1,4 +1,5 @@
 var sprites = {
+ background: {sx: 421, sy: 0, w: 320, h: 480, frames: 0},
  ship: { sx: 0, sy: 0, w: 38, h: 43, frames: 3 },
  missile: { sx: 0, sy: 42, w: 7, h: 20, frames: 1 },
  enemy_purple: { sx: 37, sy: 0, w: 42, h: 43, frames: 1 },

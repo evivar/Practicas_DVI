@@ -1,5 +1,6 @@
 /* Center the container */
 #container {
+  background: ("sprites/sprites.png");
   padding-top:50px;
   margin:0 auto;
   width:480px;
