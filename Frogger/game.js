@@ -11,10 +11,7 @@ var OBJECT_PLAYER = 1,
 
 // Especifica lo que se debe pintar al cargar el juego
 var startGame = function () {
-    Game.setBoard(0, new StarField(20, 0.4, 100, true));
-    Game.setBoard(1, new StarField(50, 0.6, 100));
-    Game.setBoard(2, new StarField(100, 1.0, 50));
-    Game.setBoard(3, new TitleScreen("Alien Invasion",
+    Game.setBoard(0, new TitleScreen("Alien Invasion",
         "Press fire to start playing",
         playGame));
 }
@@ -22,6 +19,7 @@ var startGame = function () {
 var playGame = function () {
     var board = new GameBoard();
     board.add(new BackgroundGame());
+    Game.setBoard(1, new Frog());
     Game.setBoard(0, board);
 };
 
@@ -38,7 +36,7 @@ var loseGame = function () {
 // y este después de realizar la inicialización llamará a
 // startGame
 window.addEventListener("load", function () {
-    Game.initialize("game", sprites, playGame);
+    Game.initialize("game", sprites, playGame  );
 });
 
 function drawExplosion_Low2High() {

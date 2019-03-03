@@ -98,24 +98,24 @@ var sprites = {
         w: ,
         h: ,
         frames: 
-    },
+    },*/
     frog: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
+        sx: 0,
+        sy: 345,
+        w: 38,
+        h: 48,
+        frames: 7
     },
     title: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 0
-    },*/
-    background: {
         sx: 0,
-        sy: 500,
+        sy: 390,
+        w: 320,
+        h: 170,
+        frames: 0
+    },
+    background: {
+        sx: 420,
+        sy: 0,
         w: 550,
         h: 622,
         frames: 0
@@ -184,10 +184,82 @@ Sprite.prototype.hit = function (damage) {
     this.board.remove(this);
 }
 
-var BackgroundGame = function(){
+var BackgroundGame = function () {
 
-    this.setup('background', {vx: 0});
+    this.setup('background', {
+        w: 320,
+        h: 480
+    });
 
+    this.x = Game.width / 2 - this.w / 2;
+
+    this.y = Game.height - 0 - this.h;
+
+}
+
+BackgroundGame.prototype = new Sprite();
+
+BackgroundGame.prototype.step = function (dt) {};
+
+var Title = function () {
+
+    this.setup('title', {});
+
+    this.x = Game.width / 2 - this.w / 2;
+
+    this.y = Game.height - 0 - this.h;
+
+
+}
+
+Title.prototype = new Sprite();
+
+Title.prototype.step = function (dt) {};
+
+var Frog = function () {
+
+    this.setup('frog', {
+    });
+
+    // Variables
+    this.x = Game.width / 2;
+
+    this.y = Game.height - this.h;
+
+    this.maxVel = 200;
+
+}
+
+Frog.prototype = new Sprite();
+
+Frog.prototype.type = OBJECT_PLAYER;
+
+Frog.prototype.step = function (dt) {
+    // Movimiento de la nave
+    if (Game.keys['left']) {
+        this.vx = -this.maxVel;
+    } else if (Game.keys['right']) {
+        this.vx = this.maxVel;
+    } else if (Game.keys['up']) {
+        this.vy = -this.maxVel;
+    } else if (Game.keys['down']) {
+        this.vy = this.maxVel;
+    } else {
+        this.vx = 0;
+    }
+    // Para no salirme del tablero
+    this.x += this.vx * dt;
+    if (this.x < 0) {
+        this.x = 0;
+    } else if (this.x > Game.width - this.w) {
+        this.x = Game.width - this.w
+    }
+}
+
+Frog.prototype.hit = function (damage) {
+    if (this.board.remove(this)) {
+        loseGame();
+    }
 }
 
 /**
