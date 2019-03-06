@@ -1,14 +1,14 @@
 // Variable
 
 var sprites = {
-    /*blue_car: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
+    blue_car: {
+        sx: 0,
+        sy: 7,
+        w: 101,
+        h: 48,
+        frames: 0
     },
-    green_car: {
+    /*green_car: {
         sx: ,
         sy: ,
         w: ,
@@ -103,7 +103,7 @@ var sprites = {
         sx: 0,
         sy: 345,
         w: 38,
-        h: 48,
+        h: 40,
         frames: 7
     },
     title: {
@@ -145,14 +145,13 @@ var OBJECT_PLAYER = 1,
         H: Desfase de la velocidad sinusoidal vertical
 */
 
-var enemies = {
-    straight: {
-        x: 0,
-        y: -50,
-        sprite: 'enemy_ship',
-        health: 10,
-        E: 100
-    },
+var cars = {
+    blue: {
+        x: -100,
+        y: 0,
+        sprite: 'blue_car',
+        A: 100
+    }
 };
 
 /**
@@ -193,7 +192,7 @@ var BackgroundGame = function () {
 
     this.x = Game.width / 2 - this.w / 2;
 
-    this.y = Game.height - 0 - this.h;
+    this.y = Game.height - this.h;
 
 }
 
@@ -201,24 +200,11 @@ BackgroundGame.prototype = new Sprite();
 
 BackgroundGame.prototype.step = function (dt) {};
 
-var Title = function () {
-
-    this.setup('title', {});
-
-    this.x = Game.width / 2 - this.w / 2;
-
-    this.y = Game.height - 0 - this.h;
-
-
-}
-
-Title.prototype = new Sprite();
-
-Title.prototype.step = function (dt) {};
-
 var Frog = function () {
 
     this.setup('frog', {
+        w: 38,
+        h: 40
     });
 
     // Variables
@@ -246,87 +232,80 @@ Frog.prototype.step = function (dt) {
         this.vy = this.maxVel;
     } else {
         this.vx = 0;
+        this.vy = 0;
     }
     // Para no salirme del tablero
     this.x += this.vx * dt;
     if (this.x < 0) {
         this.x = 0;
     } else if (this.x > Game.width - this.w) {
-        this.x = Game.width - this.w
+        this.x = Game.width - this.w;
+    }
+    this.y += this.vy * dt;
+    if (this.y < 0) {
+        this.y = 0;
+    } else if (this.y > Game.height - this.h) {
+        this.y = Game.height - this.h;
+    }
+    var collision = this.board.collide(this, OBJECT_ENEMY);
+    if (collision) {
+        this.board.remove(this);
+        collision.hit();
     }
 }
 
-Frog.prototype.hit = function (damage) {
+Frog.prototype.hit = function () {
     if (this.board.remove(this)) {
         loseGame();
+        window.alert("Has palmado");
     }
 }
 
-/**
- * 
- */
-var PlayerShip = function () {
-
-    this.setup('ship', {
-        vx: 0,
-        frame: 0,
-        reloadTime: 0.25,
-        maxVel: 200
-    });
-
-    // Variables
-    this.x = Game.width / 2 - this.w / 2;
-
-    this.y = Game.height - 10 - this.h;
-
-    this.vx = 0;
-
-    this.reload = this.reloadTime;
-
+var Car = function (blueprint, override) {
+    this.merge(this.baseParameters);
+    this.setup(blueprint.sprite, blueprint);
+    this.merge(override);
 }
 
-PlayerShip.prototype = new Sprite();
+Car.prototype = new Sprite();
 
-PlayerShip.prototype.type = OBJECT_PLAYER;
+Car.prototype.baseParameters = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+    H: 0,
+    t: 0
+};
+
+Car.prototype.type = OBJECT_ENEMY; // ESTO ES IMPORTANTE
 
 /**
- * Implementa las formulas de los movimientos
- * @param  {} dt
+ * Funcion step de los prototipos, implementa las funciones del movimiento de los enemigos
+ * @param {} dt
  */
-PlayerShip.prototype.step = function (dt) {
-    // Movimiento de la nave
-    if (Game.keys['left']) {
-        this.vx = -this.maxVel;
-    } else if (Game.keys['right']) {
-        this.vx = this.maxVel;
-    } else if (Game.keys['up']) {
-        this.vx = -this.maxVel;
-    }else if (Game.keys['down'])
-    {
-        this.vx = this.maxVel;
-    }
-    // Para no salirme del tablero
+Car.prototype.step = function (dt) {
+    this.t += dt;
+    this.vx = this.A + this.B * Math.sin(this.C * this.t + this.D);
+    this.vy = this.E + this.F * Math.sin(this.G * this.t + this.H);
     this.x += this.vx * dt;
-    if (this.x < 0) {
-        this.x = 0;
-    } else if (this.x > Game.width - this.w) {
-        this.x = Game.width - this.w
+    this.y += this.vy * dt;
+    if (this.y > Game.height ||
+        this.x < -this.w ||
+        this.x > Game.width) {
+        this.board.remove(this);
     }
-    // Disparos de la nave
-    this.reload -= dt;
-    if (Game.keys['fire'] && this.reload < 0) {
-        Game.keys['fire'] = false;
-        this.reload = this.reloadTime;
-        this.board.add(new PlayerMissile(this.x, this.y + this.h / 2));
-        this.board.add(new PlayerMissile(this.x + this.w, this.y + this.h / 2));
-    }
+    /*var collision = this.board.collide(this, OBJECT_PLAYER);
+    if (collision) {
+        this.board.remove(this);
+        loseGame();
+    }*/
 }
 
-PlayerShip.prototype.hit = function (damage) {
-    if (this.board.remove(this)) {
-        loseGame();
-    }
-}
+
 
 
 /**
@@ -375,7 +354,7 @@ Enemy.prototype.step = function (dt) {
     }
     var collision = this.board.collide(this, OBJECT_PLAYER);
     if (collision) {
-        collision.hit(this.damage);
+        collision.hit();
         this.board.remove(this);
     }
 }

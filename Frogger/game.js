@@ -18,13 +18,14 @@ var startGame = function () {
 
 var playGame = function () {
     var board = new GameBoard();
-    board.add(new BackgroundGame());
-    Game.setBoard(1, new Frog());
-    Game.setBoard(0, board);
+    Game.setBoard(0, new BackgroundGame());
+    board.add(new Frog());
+    board.add(new Car(cars.blue, {y: 575}));
+    Game.setBoard(1, board);
 };
 
 var winGame = function () {
-    Game.setBoard(3, new TitleScreen("You Win!!", "Press fire to play again", playGame));
+    Game.setBoard(0, new BackgroundGame());
 }
 
 var loseGame = function () {
