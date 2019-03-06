@@ -299,8 +299,11 @@ PlayerShip.prototype.step = function (dt) {
         this.vx = -this.maxVel;
     } else if (Game.keys['right']) {
         this.vx = this.maxVel;
-    } else {
-        this.vx = 0;
+    } else if (Game.keys['up']) {
+        this.vx = -this.maxVel;
+    }else if (Game.keys['down'])
+    {
+        this.vx = this.maxVel;
     }
     // Para no salirme del tablero
     this.x += this.vx * dt;
