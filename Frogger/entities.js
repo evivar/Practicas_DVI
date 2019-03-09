@@ -221,22 +221,26 @@ Frog.prototype = new Sprite();
 Frog.prototype.type = OBJECT_PLAYER;
 
 Frog.prototype.step = function (dt) {
-    // Movimiento de la nave
+    // Movimiento de la rana
     if (Game.keys['left']) {
-        this.vx = -this.maxVel;
+        this.vx = -10;//HAY QUE VER COMO HACER QUE SE MUEVA CON EL DIBUJO Y ESO.
+        this.x -= 48; //AJUSTAR MEDIDAS
     } else if (Game.keys['right']) {
-        this.vx = this.maxVel;
+        this.vx = 10;
+        this.x += 48;
     } else if (Game.keys['up']) {
-        this.vy = -this.maxVel;
+        this.vy = -10;
+        this.y -= 40;
     } else if (Game.keys['down']) {
-        this.vy = this.maxVel;
+        this.vy = 10;
+        this.y += 40;
     } else {
         this.vx = 0;
         this.vy = 0;
     }
     // Para no salirme del tablero
     this.x += this.vx * dt;
-    if (this.x < 0) {
+     if (this.x < 0) {
         this.x = 0;
     } else if (this.x > Game.width - this.w) {
         this.x = Game.width - this.w;
@@ -247,7 +251,8 @@ Frog.prototype.step = function (dt) {
     } else if (this.y > Game.height - this.h) {
         this.y = Game.height - this.h;
     }
-    var collision = this.board.collide(this, OBJECT_ENEMY);
+
+    	var collision = this.board.collide(this, OBJECT_ENEMY);
     if (collision) {
         this.board.remove(this);
         collision.hit();
