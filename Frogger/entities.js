@@ -8,102 +8,42 @@ var sprites = {
         h: 48,
         frames: 0
     },
-    /*green_car: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    yellow_car: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    little_truck: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    big_truck: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    little_trunk: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    medium_trunk: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    big_trunk: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    yellow_death: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    red_death: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    gray_death: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    green_death: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    animate_turtle: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },
-    turtle: {
-        sx: ,
-        sy: ,
-        w: ,
-        h: ,
-        frames: 
-    },*/
+    /*blue_car: { sx: 8, sy: 6, w: 90, h: 49, frames: 1 },
+  green_car: { sx: 108, sy: 4, w: 95, h: 51, frames: 1 },
+  yellow_car: { sx: 213, sy: 6, w: 95, h: 49, frames: 1 },
+
+  white_van: { sx: 6, sy: 62, w: 125, h: 46, frames: 1 },
+  brown_van: { sx: 148, sy: 62, w: 199, h: 47, frames: 1 },
+
+  yellow_skull: { sx: 211, sy: 128, w: 46, h: 35, frames: 1 },
+  orange_skull: { sx: 259, sy: 128, w: 46, h: 35, frames: 1 },
+  grey_skull: { sx: 307, sy: 128, w: 46, h: 35, frames: 1 },
+  green_skull: { sx: 355, sy: 128, w: 46, h: 35, frames: 1 },
+
+  medium_wood: { sx: 9, sy: 122, w: 191, h: 41, frames: 1 },
+  large_wood: { sx: 9, sy: 171, w: 248, h: 191, frames: 1 },
+  small_wood: { sx: 270, sy: 171, w: 131, h: 191, frames: 1 },
+
+  leaf: { sx: 4, sy: 234, w: 44, h: 40, frames: 1 },
+  fly: { sx: 58, sy: 239, w: 31, h: 34, frames: 1 },
+
+  green_floor: { sx: 95, sy: 225, w: 58, h: 57, frames: 1 },
+  blue_floor: { sx: 158, sy: 225, w: 58, h: 57, frames: 1 },
+  black_floor: { sx: 221, sy: 225, w: 58, h: 57, frames: 1 },
+  grass_floor: { sx: 284, sy: 225, w: 58, h: 57, frames: 1 },
+  leaf_floor: { sx: 348, sy: 225, w: 58, h: 57, frames: 1 },
+
+  turtle_dive: { sx: 5, sy: 288, w: 50, h: 47, frames: 9 },
+  frog_move: { sx: 0, sy: 339, w: 40, h: 40, frames: 7 },
+  turtle: { sx: 281, sy: 344, w: 49, h: 43, frames: 2 },
+
+  title: { sx: 8, sy: 395, w: 261, h: 164, frames: 1 },
+  background: { sx: 421, sy: 0, w: 550, h: 625, frames: 1 },*/
     frog: {
-        sx: 0,
-        sy: 345,
-        w: 38,
-        h: 40,
+        sx: 0, 
+        sy: 339,
+        w: 40, 
+        h: 48, 
         frames: 7
     },
     title: {
@@ -204,16 +144,22 @@ var Frog = function () {
 
     this.setup('frog', {
         w: 38,
-        h: 40
+        h: 40,
+        maxVel: 10,
+        frame: 0,
+        vx: 0,
+        vy: 0,
+        reloadTime: 0.25
     });
-
+  
     // Variables
-    this.x = Game.width / 2;
+    this.x = Game.width / 2 - this.w / 2;
 
-    this.y = Game.height - this.h;
+    this.y = Game.height + this.h / 2;
 
-    this.maxVel = 200;
-
+    this.maxVel = 10;
+  	this.reload = this.reloadTime;
+  	this.subFrame = 0;
 }
 
 Frog.prototype = new Sprite();
@@ -223,20 +169,40 @@ Frog.prototype.type = OBJECT_PLAYER;
 Frog.prototype.step = function (dt) {
     // Movimiento de la rana
     if (Game.keys['left']) {
-        this.vx = -10;//HAY QUE VER COMO HACER QUE SE MUEVA CON EL DIBUJO Y ESO.
+    	console.log("HOLA");
+        this.vx = -this.maxVel;//HAY QUE VER COMO HACER QUE SE MUEVA CON EL DIBUJO Y ESO.
         this.x -= 48; //AJUSTAR MEDIDAS
+        this.frame = Math.floor(this.subFrame++ / 3);
+     	 if (this.subFrame >= 21) {
+        this.subFrame = 0;
+      	}
     } else if (Game.keys['right']) {
-        this.vx = 10;
+        this.vx = this.maxVel;
         this.x += 48;
+        this.frame = Math.floor(this.subFrame++ / 3);
+      if (this.subFrame >= 21) {
+        this.subFrame = 0;
+      }
     } else if (Game.keys['up']) {
-        this.vy = -10;
+        this.vy = -this.maxVel;
         this.y -= 40;
+        this.frame = Math.floor(this.subFrame++ / 3);
+      if (this.subFrame >= 21) {
+        this.subFrame = 0;
+      }
     } else if (Game.keys['down']) {
-        this.vy = 10;
+        this.vy = this.maxVel;
         this.y += 40;
+        this.frame = Math.floor(this.subFrame++ / 3);
+      
+      if (this.subFrame >= 21) {
+        this.subFrame = 0;
+      }
     } else {
         this.vx = 0;
         this.vy = 0;
+        this.x += this.vx * dt;
+      	this.y += this.vy * dt;
     }
     // Para no salirme del tablero
     this.x += this.vx * dt;
@@ -251,7 +217,7 @@ Frog.prototype.step = function (dt) {
     } else if (this.y > Game.height - this.h) {
         this.y = Game.height - this.h;
     }
-
+    this.reload -= dt;
     	var collision = this.board.collide(this, OBJECT_ENEMY);
     if (collision) {
         this.board.remove(this);
