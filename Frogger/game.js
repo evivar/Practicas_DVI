@@ -19,8 +19,12 @@ var startGame = function () {
 var playGame = function () {
     var board = new GameBoard();
     Game.setBoard(0, new BackgroundGame());
+    board.add(new Car(cars.blue, {}));
+    board.add(new Car(cars.brown, {}));
+    board.add(new Car(cars.yellow, {}));
+    board.add(new Car(cars.white, {}));
+    board.add(new Car(cars.green, {}));
     board.add(new Frog());
-    board.add(new Car(cars.blue, {y: 575}));
     Game.setBoard(1, board);
 };
 
@@ -37,7 +41,7 @@ var loseGame = function () {
 // y este después de realizar la inicialización llamará a
 // startGame
 window.addEventListener("load", function () {
-    Game.initialize("game", sprites, playGame  );
+    Game.initialize("game", sprites, playGame );
 });
 
 function drawExplosion_Low2High() {

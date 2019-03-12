@@ -1,75 +1,157 @@
-// Variable
-
 var sprites = {
     blue_car: {
-        sx: 0,
-        sy: 7,
-        w: 101,
-        h: 48,
-        frames: 0
+        sx: 8,
+        sy: 6,
+        w: 90,
+        h: 49,
+        frames: 1
     },
-    /*blue_car: { sx: 8, sy: 6, w: 90, h: 49, frames: 1 },
-  green_car: { sx: 108, sy: 4, w: 95, h: 51, frames: 1 },
-  yellow_car: { sx: 213, sy: 6, w: 95, h: 49, frames: 1 },
-
-  white_van: { sx: 6, sy: 62, w: 125, h: 46, frames: 1 },
-  brown_van: { sx: 148, sy: 62, w: 199, h: 47, frames: 1 },
-
-  yellow_skull: { sx: 211, sy: 128, w: 46, h: 35, frames: 1 },
-  orange_skull: { sx: 259, sy: 128, w: 46, h: 35, frames: 1 },
-  grey_skull: { sx: 307, sy: 128, w: 46, h: 35, frames: 1 },
-  green_skull: { sx: 355, sy: 128, w: 46, h: 35, frames: 1 },
-
-  medium_wood: { sx: 9, sy: 122, w: 191, h: 41, frames: 1 },
-  large_wood: { sx: 9, sy: 171, w: 248, h: 191, frames: 1 },
-  small_wood: { sx: 270, sy: 171, w: 131, h: 191, frames: 1 },
-
-  leaf: { sx: 4, sy: 234, w: 44, h: 40, frames: 1 },
-  fly: { sx: 58, sy: 239, w: 31, h: 34, frames: 1 },
-
-  green_floor: { sx: 95, sy: 225, w: 58, h: 57, frames: 1 },
-  blue_floor: { sx: 158, sy: 225, w: 58, h: 57, frames: 1 },
-  black_floor: { sx: 221, sy: 225, w: 58, h: 57, frames: 1 },
-  grass_floor: { sx: 284, sy: 225, w: 58, h: 57, frames: 1 },
-  leaf_floor: { sx: 348, sy: 225, w: 58, h: 57, frames: 1 },
-
-  turtle_dive: { sx: 5, sy: 288, w: 50, h: 47, frames: 9 },
-  frog_move: { sx: 0, sy: 339, w: 40, h: 40, frames: 7 },
-  turtle: { sx: 281, sy: 344, w: 49, h: 43, frames: 2 },
-
-  title: { sx: 8, sy: 395, w: 261, h: 164, frames: 1 },
-  background: { sx: 421, sy: 0, w: 550, h: 625, frames: 1 },*/
+    green_car: {
+        sx: 108,
+        sy: 4,
+        w: 95,
+        h: 51,
+        frames: 1
+    },
+    yellow_car: {
+        sx: 213,
+        sy: 6,
+        w: 95,
+        h: 49,
+        frames: 1
+    },
+    white_van: {
+        sx: 6,
+        sy: 62,
+        w: 125,
+        h: 46,
+        frames: 1
+    },
+    brown_van: {
+        sx: 148,
+        sy: 62,
+        w: 199,
+        h: 47,
+        frames: 1
+    },
+    skull: {
+        sx: 211,
+        sy: 128,
+        w: 46,
+        h: 35,
+        frames: 4
+    },
+    medium_trunk: {
+        sx: 9,
+        sy: 122,
+        w: 191,
+        h: 41,
+        frames: 1
+    },
+    large_trunk: {
+        sx: 9,
+        sy: 171,
+        w: 248,
+        h: 191,
+        frames: 1
+    },
+    small_trunk: {
+        sx: 270,
+        sy: 171,
+        w: 131,
+        h: 191,
+        frames: 1
+    },
+    leaf: {
+        sx: 4,
+        sy: 234,
+        w: 44,
+        h: 40,
+        frames: 1
+    },
+    fly: {
+        sx: 58,
+        sy: 239,
+        w: 31,
+        h: 34,
+        frames: 1
+    },
+    green: {
+        sx: 95,
+        sy: 225,
+        w: 58,
+        h: 57,
+        frames: 1
+    },
+    blue: {
+        sx: 158,
+        sy: 225,
+        w: 58,
+        h: 57,
+        frames: 1
+    },
+    black: {
+        sx: 221,
+        sy: 225,
+        w: 58,
+        h: 57,
+        frames: 1
+    },
+    grass: {
+        sx: 284,
+        sy: 225,
+        w: 58,
+        h: 57,
+        frames: 1
+    },
+    leaf_grass: {
+        sx: 348,
+        sy: 225,
+        w: 58,
+        h: 57,
+        frames: 1
+    },
+    animate_turtle: {
+        sx: 5,
+        sy: 288,
+        w: 50,
+        h: 47,
+        frames: 9
+    },
     frog: {
-        sx: 0, 
+        sx: 0,
         sy: 339,
-        w: 40, 
-        h: 48, 
+        w: 40,
+        h: 48,
         frames: 7
     },
+    turtle: {
+        sx: 281,
+        sy: 344,
+        w: 49,
+        h: 43,
+        frames: 2
+    },
     title: {
-        sx: 0,
-        sy: 390,
-        w: 320,
-        h: 170,
-        frames: 0
+        sx: 8,
+        sy: 395,
+        w: 261,
+        h: 164,
+        frames: 1
     },
     background: {
-        sx: 420,
+        sx: 421,
         sy: 0,
         w: 550,
-        h: 622,
-        frames: 0
+        h: 625,
+        frames: 1
     }
-};
+}
 
 var OBJECT_PLAYER = 1,
-    OBJECT_PLAYER_PROJECTILE = 2,
-    OBJECT_ENEMY = 4,
-    OBJECT_ENEMY_PROJECTILE = 8,
-    OBJECT_POWERUP = 16;
+    OBJECT_ENEMY = 2,
+    OBJECT_WATER = 4;
 
-
-// Blueprints de los movimientos de los enemigos
 /*
     Utilizamos esta funcion para el movimiento de los enemigos:
         vx = A + B * sin (C * t + D)
@@ -84,19 +166,39 @@ var OBJECT_PLAYER = 1,
         G: Periodo vertical
         H: Desfase de la velocidad sinusoidal vertical
 */
-
 var cars = {
     blue: {
-        x: -100,
-        y: 0,
+        x: -90,
+        y: 477,
         sprite: 'blue_car',
+        A: 100,
+    },
+    green: {
+        x: 485,
+        y: 523,
+        sprite: 'green_car',
+        A: -100
+    },
+    yellow: {
+        x: -95,
+        y: 429,
+        sprite: 'yellow_car',
         A: 100
-    }
+    },
+    white: {
+        x: -125,
+        y: 335,
+        sprite: 'white_van',
+        A: 100
+    },
+    brown: {
+        x: 485,
+        y: 381,
+        sprite: 'brown_van',
+        A: -100
+    },
 };
 
-/**
- * Clase Sprite -> Tambien para frogger
- */
 var Sprite = function () {}
 
 Sprite.prototype.setup = function (sprite, props) {
@@ -119,47 +221,37 @@ Sprite.prototype.draw = function (ctx) {
     SpriteSheet.draw(ctx, this.sprite, this.x, this.y, this.frame);
 }
 
-Sprite.prototype.hit = function (damage) {
+Sprite.prototype.hit = function () {
     this.board.remove(this);
 }
 
 var BackgroundGame = function () {
-
     this.setup('background', {
         w: 320,
         h: 480
     });
-
     this.x = Game.width / 2 - this.w / 2;
-
     this.y = Game.height - this.h;
-
 }
 
 BackgroundGame.prototype = new Sprite();
 
-BackgroundGame.prototype.step = function (dt) {};
+BackgroundGame.prototype.step = function (dt) {}
 
 var Frog = function () {
-
     this.setup('frog', {
-        w: 38,
-        h: 40,
+        w: 40,
+        h: 48,
         maxVel: 10,
         frame: 0,
         vx: 0,
         vy: 0,
-        reloadTime: 0.25
     });
-  
     // Variables
     this.x = Game.width / 2 - this.w / 2;
-
     this.y = Game.height + this.h / 2;
-
     this.maxVel = 10;
-  	this.reload = this.reloadTime;
-  	this.subFrame = 0;
+    this.subFrame = 0;
 }
 
 Frog.prototype = new Sprite();
@@ -167,75 +259,83 @@ Frog.prototype = new Sprite();
 Frog.prototype.type = OBJECT_PLAYER;
 
 Frog.prototype.step = function (dt) {
-    // Movimiento de la rana
+    switch(Game.KEY_CODES){
+        case 'up': console.log("ARRIBa");
+    }
     if (Game.keys['left']) {
-    	console.log("HOLA");
-        this.vx = -this.maxVel;//HAY QUE VER COMO HACER QUE SE MUEVA CON EL DIBUJO Y ESO.
-        this.x -= 48; //AJUSTAR MEDIDAS
-        this.frame = Math.floor(this.subFrame++ / 3);
-     	 if (this.subFrame >= 21) {
-        this.subFrame = 0;
-      	}
-    } else if (Game.keys['right']) {
+        this.vx = -this.maxVel;
+        this.x -= 48;
+        this.frame = Math.floor(this.subFrame++/ 3);
+        if (this.subFrame >= 21) {
+            this.subFrame = 0;
+        }
+    }
+    else if (Game.keys['right']) {
         this.vx = this.maxVel;
         this.x += 48;
-        this.frame = Math.floor(this.subFrame++ / 3);
-      if (this.subFrame >= 21) {
-        this.subFrame = 0;
-      }
-    } else if (Game.keys['up']) {
+        this.frame = Math.floor(this.subFrame++/ 3);
+        if (this.subFrame >= 21) {
+            this.subFrame = 0;
+        }
+    }
+    else if (Game.keys['up']) {
         this.vy = -this.maxVel;
         this.y -= 40;
-        this.frame = Math.floor(this.subFrame++ / 3);
-      if (this.subFrame >= 21) {
-        this.subFrame = 0;
-      }
-    } else if (Game.keys['down']) {
+        this.frame = Math.floor(this.subFrame++/ 3);
+        if (this.subFrame >= 21) {
+            this.subFrame = 0;
+        }
+    }
+    else if (Game.keys['down']) {
         this.vy = this.maxVel;
         this.y += 40;
-        this.frame = Math.floor(this.subFrame++ / 3);
-      
-      if (this.subFrame >= 21) {
-        this.subFrame = 0;
-      }
-    } else {
-        this.vx = 0;
-        this.vy = 0;
-        this.x += this.vx * dt;
-      	this.y += this.vy * dt;
+        this.frame = Math.floor(this.subFrame++/ 3);
+        if (this.subFrame >= 21) {
+            this.subFrame = 0;
+        }
     }
-    // Para no salirme del tablero
-    this.x += this.vx * dt;
-     if (this.x < 0) {
-        this.x = 0;
-    } else if (this.x > Game.width - this.w) {
-        this.x = Game.width - this.w;
+    else {
+                            this.vx = 0;
+                            this.vy = 0;
+                            this.x += this.vx * dt;
+                            this.y += this.vy * dt;
+                        }
+                        this.x += this.vx * dt;
+                        if (this.x < 0) {
+                            this.x = 0;
+                        } else if (this.x > Game.width - this.w) {
+                            this.x = Game.width - this.w;
+                        }
+                        this.y += this.vy * dt;
+                        if (this.y < 0) {
+                            this.y = 0;
+                        } else if (this.y > Game.height - this.h) {
+                            this.y = Game.height - this.h;
+                        }
+                        this.reload -= dt;
+                        var collision = this.board.collide(this, OBJECT_ENEMY);
+                        if (collision) {
+                            this.board.remove(this);
+                            collision.hit();
+                        }
+                    }
+            /*}
+        }
     }
-    this.y += this.vy * dt;
-    if (this.y < 0) {
-        this.y = 0;
-    } else if (this.y > Game.height - this.h) {
-        this.y = Game.height - this.h;
-    }
-    this.reload -= dt;
-    	var collision = this.board.collide(this, OBJECT_ENEMY);
-    if (collision) {
-        this.board.remove(this);
-        collision.hit();
-    }
-}
+}*/
 
 Frog.prototype.hit = function () {
     if (this.board.remove(this)) {
+        this.board.add(new Skull(this.x, this.y));
         loseGame();
-        window.alert("Has palmado");
     }
-}
+};
 
 var Car = function (blueprint, override) {
     this.merge(this.baseParameters);
     this.setup(blueprint.sprite, blueprint);
     this.merge(override);
+    this.t = 0;
 }
 
 Car.prototype = new Sprite();
@@ -269,170 +369,21 @@ Car.prototype.step = function (dt) {
         this.x > Game.width) {
         this.board.remove(this);
     }
-    /*var collision = this.board.collide(this, OBJECT_PLAYER);
-    if (collision) {
-        this.board.remove(this);
-        loseGame();
-    }*/
-}
-
-
-
-
-/**
- * Enemigo
- * @param {} blueprint 
- * @param {} override 
- */
-var Enemy = function (blueprint, override) {
-    this.merge(this.baseParameters);
-    this.setup(blueprint.sprite, blueprint);
-    this.merge(override);
-}
-
-Enemy.prototype = new Sprite();
-
-Enemy.prototype.baseParameters = {
-    A: 0,
-    B: 0,
-    C: 0,
-    D: 0,
-    E: 0,
-    F: 0,
-    G: 0,
-    H: 0,
-    t: 0,
-    health: 20,
-    damage: 20
-};
-
-Enemy.prototype.type = OBJECT_ENEMY; // ESTO ES IMPORTANTE
-
-/**
- * Funcion step de los prototipos, implementa las funciones del movimiento de los enemigos
- * @param {} dt
- */
-Enemy.prototype.step = function (dt) {
-    this.t += dt;
-    this.vx = this.A + this.B * Math.sin(this.C * this.t + this.D);
-    this.vy = this.E + this.F * Math.sin(this.G * this.t + this.H);
-    this.x += this.vx * dt;
-    this.y += this.vy * dt;
-    if (this.y > Game.height ||
-        this.x < -this.w ||
-        this.x > Game.width) {
-        this.board.remove(this);
-    }
     var collision = this.board.collide(this, OBJECT_PLAYER);
     if (collision) {
-        collision.hit();
         this.board.remove(this);
+        collision.hit();
     }
 }
 
-Enemy.prototype.hit = function (damage) {
-    this.health -= damage;
-    if (this.health <= 0) {
-        if (this.board.remove(this)) {
-            this.board.add(new Explosion(this.x + this.w / 2,
-                this.y + this.h / 2));
-        }
+Car.prototype.hit = function () {
+    if (this.board.remove(this)) {
+        loseGame();
     }
-}
-
-
-/**
- * Misil del jugador
- * @param {} x 
- * @param {} y 
- */
-var PlayerMissile = function (x, y) {
-    this.setup('missile', {
-        vy: -700,
-        damage: 10
-    });
-    this.x = x - this.w / 2;
-    this.y = y - this.h;
 };
 
-
-PlayerMissile.prototype = new Sprite();
-
-PlayerMissile.prototype.type = OBJECT_PLAYER_PROJECTILE;
-
-/**
- * Funcion step de los misilees del jugador, siguen una trayectoria recta hasta que se salen del tablero
- * @param {} dt
- */
-PlayerMissile.prototype.step = function (dt) {
-    this.y += this.vy * dt;
-    var collision = this.board.collide(this, OBJECT_ENEMY);
-    if (collision) {
-        collision.hit(this.damage);
-        this.board.remove(this);
-    } else if (this.y < -this.h) {
-        this.board.remove(this);
-    }
-}
-
-var StarField = function (speed, opacity, numStars, clear) {
-    this.stars = document.createElement("canvas");
-    this.stars.width = Game.width;
-    this.stars.height = Game.height;
-    this.starCtx = this.stars.getContext("2d");
-    this.offset = 0;
-    this.speed = speed;
-    if (clear) {
-        this.starCtx.fillStyle = "#000";
-        this.starCtx.fillRect(0, 0, this.stars.width, this.stars.height);
-    }
-
-    // Now draw a bunch of random 2 pixel
-    // rectangles onto the offscreen canvas
-    this.starCtx.fillStyle = "#FFF";
-    this.starCtx.globalAlpha = opacity;
-    for (var i = 0; i < numStars; i++) {
-        this.starCtx.fillRect(Math.floor(Math.random() * this.stars.width),
-            Math.floor(Math.random() * this.stars.height),
-            2,
-            2);
-    }
-}
-
-// This method is called every frame
-// to draw the starfield onto the canvas
-StarField.prototype.draw = function (ctx) {
-    var intOffset = Math.floor(this.offset);
-    var remaining = this.stars.height - intOffset;
-
-    // Draw the top half of the starfield
-    if (intOffset > 0) {
-        ctx.drawImage(this.stars,
-            0, remaining,
-            this.stars.width, intOffset,
-            0, 0,
-            this.stars.width, intOffset);
-    }
-
-    // Draw the bottom half of the starfield
-    if (remaining > 0) {
-        ctx.drawImage(this.stars,
-            0, 0,
-            this.stars.width, remaining,
-            0, intOffset,
-            this.stars.width, remaining);
-    }
-}
-
-// This method is called to update
-// the starfield
-StarField.prototype.step = function (dt) {
-    this.offset += dt * this.speed;
-    this.offset = this.offset % this.stars.height;
-}
-
-var Explosion = function (centerX, centerY) {
-    this.setup('explosion', {
+var Skull = function (centerX, centerY) {
+    this.setup('skull', {
         frame: 0
     });
     this.x = centerX - this.w / 2;
@@ -440,11 +391,6 @@ var Explosion = function (centerX, centerY) {
     this.subFrame = 0;
 };
 
-Explosion.prototype = new Sprite();
+Skull.prototype = new Sprite();
 
-Explosion.prototype.step = function (dt) {
-        this.frame = Math.floor(this.subFrame++/ 3);
-            if (this.subFrame >= 36) {
-                this.board.remove(this);
-            }
-        }
+Skull.prototype.step = function (dt) {};
