@@ -162,43 +162,7 @@ var Game = new function () {
 
 // Funciones
 
-/**
- * Pantalla de titulo
- * @param {} title Titulo del mensaje
- * @param {} subtitle Subtitulo del mensaje
- * @param {} callback 
- */
-var TitleScreen = function TitleScreen(title, subtitle, callback) {
 
-  // Variables
-
-  var up = false;
-
-  // Funciones
-
-  /**
-   * Funcion step de la pantalla de titulo
-   * @param {} dt
-   */
-  this.step = function (dt) {
-    if (!Game.keys['fire']) up = true;
-    if (up && Game.keys['fire'] && callback) callback();
-  };
-
-  /**
-   * Funcion draw de la pantalla de titulo
-   * @param {} ctx Contexto
-   */
-  this.draw = function (ctx) {
-    ctx.fillStyle = "#FFFFFF";
-    ctx.textAlign = "center";
-    ctx.font = "bold 40px bangers";
-    ctx.fillText(title, Game.width / 2, Game.height / 2);
-    ctx.font = "bold 20px bangers";
-    ctx.fillText(subtitle, Game.width / 2, Game.height / 2 + 140);
-  };
-
-};
 
 /**
  * Tablero de juego

@@ -11,8 +11,9 @@ var OBJECT_PLAYER = 1,
 
 // Especifica lo que se debe pintar al cargar el juego
 var startGame = function () {
-    Game.setBoard(0, new TitleScreen("Alien Invasion",
-        "Press fire to start playing",
+    Game.setBoard(0, new BackgroundGame());
+    Game.setBoard(0, new TitleScreen("Frogger",
+        "Press space to start playing",
         playGame));
 }
 
@@ -24,6 +25,7 @@ var playGame = function () {
     board.add(new Car(cars.yellow, {}));
     board.add(new Car(cars.white, {}));
     board.add(new Car(cars.green, {}));
+    board.add(new Trunk(trunks.small, {}));
     board.add(new Frog());
     Game.setBoard(1, board);
 };
@@ -33,7 +35,7 @@ var winGame = function () {
 }
 
 var loseGame = function () {
-    Game.setBoard(3, new TitleScreen("Game Over", "Press fire to play again", playGame));
+    Game.setBoard(1, new TitleScreen("Game Over", "Press space to play again", playGame));
 }
 
 // Indica que se llame al método de inicialización una vez
@@ -43,31 +45,3 @@ var loseGame = function () {
 window.addEventListener("load", function () {
     Game.initialize("game", sprites, playGame );
 });
-
-function drawExplosion_Low2High() {
-    var fire = 13;
-    var id = setInterval(explosion, 50);
-
-    function explosion() {
-        if (fire == -1) {
-            clearInterval(id);
-        } else {
-            fire--;
-            SpriteSheet.render(ctx, "explosion", 150, 100, fire);
-        }
-    }
-}
-
-function drawExplosion_High2Low() {
-    var fire = 0;
-    var id = setInterval(explosion, 50);
-
-    function explosion() {
-        if (fire > 12) {
-            clearInterval(id);
-        } else {
-            fire++;
-            SpriteSheet.render(ctx, "explosion", 250, 100, fire);
-        }
-    }
-}
