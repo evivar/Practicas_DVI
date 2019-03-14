@@ -10,10 +10,10 @@ var playGame = function () {
     Game.setBoard(0, new BackgroundGame());
     board.add(new Car(cars.blue, {}));
     board.add(new Car(cars.yellow, {A: 50}));
-    board.add(new Car(cars.green, {}));
+    /*board.add(new Car(cars.green, {}));
     board.add(new Car(cars.white, {A: 50}));
     board.add(new Car(cars.brown, {A: -50}));
-    board.add(new Trunk(trunks.small, {}));
+    board.add(new Trunk(trunks.small, {}));*/
     board.add(new Trunk(trunks.turtle, {A: 50}));
     board.add(new Frog());
     Game.setBoard(1, board);

@@ -279,6 +279,7 @@ var Frog = function () {
     this.dx = this.x;
     this.dy = this.y;
     this.trunked = false;
+    this.keyPressed = false;
 }
 
 Frog.prototype = new Sprite();
@@ -286,25 +287,32 @@ Frog.prototype = new Sprite();
 Frog.prototype.type = OBJECT_PLAYER;
 
 Frog.prototype.step = function (dt) {
-    if ((this.dx == this.x) && (this.dy == this.y)) {
+    if ((this.dx == this.x) && (this.dy == this.y) && (!this.keyPressed)) {
         if (Game.keys['left']) {
+            console.log("L");
             this.vx = -450;
             this.dx = this.x - 40;
             this.mov = 'left';
+            this.keyPressed = true;
         } else if (Game.keys['right']) {
+            console.log("R");
             this.vx = 450;
             this.dx = this.x + 40;
             this.mov = 'right';
+            this.keyPressed = true;
         } else if (Game.keys['up']) {
+            console.log("U");
             this.vy = -450;
             this.dy = this.y - 48;
             this.mov = 'up';
+            this.keyPressed = true;
         } else if (Game.keys['down']) {
+            console.log("D");
             this.vy = 450;
             this.dy = this.y + 48;
             this.mov = 'down';
-
-        } else if(this.trunked == false){
+            this.keyPressed = true;
+        } else if (this.trunked == false) {
             this.vx = 0;
             this.vy = 0;
         }
@@ -312,16 +320,20 @@ Frog.prototype.step = function (dt) {
     this.x += this.vx * dt;
     this.y += this.vy * dt;
     if ((this.mov == 'up') && (this.y < this.dy)) {
-        this.y = this.dy
+        this.y = this.dy;
+        this.keyPressed = false;
     }
     if ((this.mov == 'down') && (this.y > this.dy)) {
-        this.y = this.dy
+        this.y = this.dy;
+        this.keyPressed = false;
     }
     if ((this.mov == 'left') && (this.x < this.dx)) {
-        this.x = this.dx
+        this.x = this.dx;
+        this.keyPressed = false;
     }
     if ((this.mov == 'right') && (this.x > this.dx)) {
-        this.x = this.dx
+        this.x = this.dx;
+        this.keyPressed = false;
     }
     if (this.x < 0) {
         this.x = 0;
@@ -333,24 +345,21 @@ Frog.prototype.step = function (dt) {
     } else if (this.y > Game.height - this.h) {
         this.y = Game.height - this.h
     }
-    var collision = this.board.collide(this, OBJECT_PLAYER);
+    var collision = this.board.collide(this, OBJECT_ENEMY);
     if (collision) {
         collision.hit();
         this.board.remove(this);
     }
     var trunkCollision = this.board.collide(this, OBJECT_TRUNK);
-    if(trunkCollision){
-        this.trunked = true;
+    if (trunkCollision) {
         this.onTrunk(trunkCollision.vx);
-    }
-    else{
-        this.trunked = false;
     }
 }
 
-Frog.prototype.onTrunk = function(vt){
+Frog.prototype.onTrunk = function (vt) {
     this.vx = vt;
 }
+
 
 Frog.prototype.hit = function () {
     if (this.board.remove(this)) {
@@ -439,7 +448,9 @@ Trunk.prototype.step = function (dt) {
         this.x < -this.w ||
         this.x > Game.width) {
         this.board.remove(this);
-        }
+    }
 }
 
-
+var Water = function(){
+    
+}
