@@ -3,21 +3,21 @@ var sprites = {
         sx: 8,
         sy: 6,
         w: 90,
-        h: 49,
+        h: 47,
         frames: 1
     },
     green_car: {
         sx: 108,
         sy: 4,
         w: 95,
-        h: 51,
+        h: 47,
         frames: 1
     },
     yellow_car: {
         sx: 213,
         sy: 6,
         w: 95,
-        h: 49,
+        h: 47,
         frames: 1
     },
     white_van: {
@@ -121,8 +121,8 @@ var sprites = {
     frog: {
         sx: 0,
         sy: 339,
-        w: 40,
-        h: 48,
+        w: 38,
+        h: 45,
         frames: 7
     },
     turtle: {
@@ -140,10 +140,17 @@ var sprites = {
         frames: 1
     },
     background: {
-        sx: 421,
+        sx: 398,
         sy: 0,
+        w: 549,
+        h: 624,
+        frames: 1
+    },
+    water: {
+        sx: 421,
+        sy: 48,
         w: 550,
-        h: 625,
+        h: 240,
         frames: 1
     }
 }
@@ -171,55 +178,61 @@ var OBJECT_PLAYER = 1,
 var cars = {
     blue: {
         x: -90,
-        y: 477,
+        y: 478,
         sprite: 'blue_car',
         A: 100,
     },
     green: {
         x: 485,
-        y: 523,
+        y: 526,
         sprite: 'green_car',
         A: -100
     },
     yellow: {
         x: -95,
-        y: 429,
+        y: 430,
         sprite: 'yellow_car',
         A: 100
     },
     white: {
         x: -125,
-        y: 335,
+        y: 336,
         sprite: 'white_van',
         A: 100
     },
     brown: {
         x: 485,
-        y: 381,
+        y: 382,
         sprite: 'brown_van',
         A: -100
     },
 };
 
-//Blueprints de los troncos
+//Blueprints de los troncos y las ranas
 var trunks = {
     small: {
         x: -90,
-        y: 239,
+        y: 248,
         sprite: 'small_trunk',
-        A: 50,
+        A: 50
     },
     medium: {
         x: 485,
         y: 191,
         sprite: 'medium_trunk',
-        A: 100,
+        A: 100
     },
     large: {
         x: -90,
         y: 143, // Para ir mas arriba: 95 y 47
         sprite: 'large_trunk',
-        A: 100,
+        A: 100
+    },
+    turtle: {
+        x: 0,
+        y: 191, // Para ir mas arriba: 95 y 47
+        sprite: 'turtle',
+        A: 50
     }
 };
 
@@ -250,10 +263,7 @@ Sprite.prototype.hit = function () {
 }
 
 var BackgroundGame = function () {
-    this.setup('background', {
-        w: 320,
-        h: 480
-    });
+    this.setup('background', {});
     this.x = Game.width / 2 - this.w / 2;
     this.y = Game.height - this.h;
 }
@@ -263,20 +273,12 @@ BackgroundGame.prototype = new Sprite();
 BackgroundGame.prototype.step = function (dt) {}
 
 var Frog = function () {
-    this.setup('frog', {
-        w: 40,
-        h: 48,
-        maxVel: 0,
-        frame: 0,
-        vx: 0,
-        vy: 0,
-    });
-    // Variables
+    this.setup('frog', {});
     this.x = Game.width / 2 - this.w / 2;
-    this.y = Game.height + this.h / 2;
-    this.maxVel = 0;
-    this.subFrame = 0;
-    this.timer = 25;
+    this.y = Game.height - this.h;
+    this.dx = this.x;
+    this.dy = this.y;
+    this.trunked = false;
 }
 
 Frog.prototype = new Sprite();
@@ -284,85 +286,82 @@ Frog.prototype = new Sprite();
 Frog.prototype.type = OBJECT_PLAYER;
 
 Frog.prototype.step = function (dt) {
-    if (Game.keys['left']) {
-        //this.vx = -this.maxVel;
-        this.x -= 48;
-        this.frame = Math.floor(this.subFrame++/ 3);
-            if (this.subFrame >= 21) {
-                this.subFrame = 0;
-            }
-        }
-        else if (Game.keys['right']) {
-            this.vx = this.maxVel;
-            this.x += 48;
-            this.frame = Math.floor(this.subFrame++/ 3);
-                if (this.subFrame >= 21) {
-                    this.subFrame = 0;
-                }
-            }
-            else if (Game.keys['up']) {
-                this.vy = -this.maxVel;
-                this.y -= 40;
-                this.frame = Math.floor(this.subFrame++/ 3);
-                    if (this.subFrame >= 21) {
-                        this.subFrame = 0;
-                    }
-                }
-                else if (Game.keys['down']) {
-                    this.vy = this.maxVel;
-                    this.y += 40;
-                    this.frame = Math.floor(this.subFrame++/ 3);
-                        if (this.subFrame >= 21) {
-                            this.subFrame = 0;
-                        }
-                    }
-                    else {
-                        this.vx = 0;
-                        this.vy = 0;
-                        this.x += this.vx * dt;
-                        this.y += this.vy * dt;
-                    }
-                    this.x += this.vx * dt;
-                    if (this.x < 0) {
-                        this.x = 0;
-                    } else if (this.x > Game.width - this.w) {
-                        this.x = Game.width - this.w;
-                    }
-                    this.y += this.vy * dt;
-                    if (this.y < 0) {
-                        this.y = 0;
-                    } else if (this.y > Game.height - this.h) {
-                        this.y = Game.height - this.h;
-                    }
-                    var collision = this.board.collide(this, OBJECT_ENEMY);
-                    if (collision) {
-                        this.board.remove(this);
-                        collision.hit();
-                    }
-                    var trunkCollision = this.board.collide(this, OBJECT_TRUNK);
-                    if(trunkCollision){
-                        console.log("Estoy en un tronco");
-                        this.vx = trunks.small.A;
-                    }
-                    //this.vx = 0;
-                }
-            /*}
+    if ((this.dx == this.x) && (this.dy == this.y)) {
+        if (Game.keys['left']) {
+            this.vx = -450;
+            this.dx = this.x - 40;
+            this.mov = 'left';
+        } else if (Game.keys['right']) {
+            this.vx = 450;
+            this.dx = this.x + 40;
+            this.mov = 'right';
+        } else if (Game.keys['up']) {
+            this.vy = -450;
+            this.dy = this.y - 48;
+            this.mov = 'up';
+        } else if (Game.keys['down']) {
+            this.vy = 450;
+            this.dy = this.y + 48;
+            this.mov = 'down';
+
+        } else if(this.trunked == false){
+            this.vx = 0;
+            this.vy = 0;
         }
     }
-}*/
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+    if ((this.mov == 'up') && (this.y < this.dy)) {
+        this.y = this.dy
+    }
+    if ((this.mov == 'down') && (this.y > this.dy)) {
+        this.y = this.dy
+    }
+    if ((this.mov == 'left') && (this.x < this.dx)) {
+        this.x = this.dx
+    }
+    if ((this.mov == 'right') && (this.x > this.dx)) {
+        this.x = this.dx
+    }
+    if (this.x < 0) {
+        this.x = 0;
+    } else if (this.x > Game.width - this.w) {
+        this.x = Game.width - this.w
+    }
+    if (this.y < 0) {
+        this.y = 0;
+    } else if (this.y > Game.height - this.h) {
+        this.y = Game.height - this.h
+    }
+    var collision = this.board.collide(this, OBJECT_PLAYER);
+    if (collision) {
+        collision.hit();
+        this.board.remove(this);
+    }
+    var trunkCollision = this.board.collide(this, OBJECT_TRUNK);
+    if(trunkCollision){
+        this.trunked = true;
+        this.onTrunk(trunkCollision.vx);
+    }
+    else{
+        this.trunked = false;
+    }
+}
+
+Frog.prototype.onTrunk = function(vt){
+    this.vx = vt;
+}
 
 Frog.prototype.hit = function () {
     if (this.board.remove(this)) {
-        this.board.add(new Skull(this.x, this.y));
         loseGame();
     }
-};
+}
 
 var Car = function (blueprint, override) {
     this.merge(this.baseParameters);
     this.setup(blueprint.sprite, blueprint);
     this.merge(override);
-    this.t = 0;
 }
 
 Car.prototype = new Sprite();
@@ -379,12 +378,9 @@ Car.prototype.baseParameters = {
     t: 0
 };
 
-Car.prototype.type = OBJECT_ENEMY; // ESTO ES IMPORTANTE
 
-/**
- * Funcion step de los prototipos, implementa las funciones del movimiento de los enemigos
- * @param {} dt
- */
+Car.prototype.type = OBJECT_ENEMY;
+
 Car.prototype.step = function (dt) {
     this.t += dt;
     this.vx = this.A + this.B * Math.sin(this.C * this.t + this.D);
@@ -398,22 +394,22 @@ Car.prototype.step = function (dt) {
     }
     var collision = this.board.collide(this, OBJECT_PLAYER);
     if (collision) {
-        this.board.remove(this);
         collision.hit();
+        this.board.remove(this);
     }
+
 }
 
 Car.prototype.hit = function () {
     if (this.board.remove(this)) {
         loseGame();
     }
-};
+}
 
 var Trunk = function (blueprint, override) {
     this.merge(this.baseParameters);
     this.setup(blueprint.sprite, blueprint);
     this.merge(override);
-    this.t = 0;
 }
 
 Trunk.prototype = new Sprite();
@@ -430,6 +426,7 @@ Trunk.prototype.baseParameters = {
     t: 0
 };
 
+
 Trunk.prototype.type = OBJECT_TRUNK;
 
 Trunk.prototype.step = function (dt) {
@@ -442,61 +439,7 @@ Trunk.prototype.step = function (dt) {
         this.x < -this.w ||
         this.x > Game.width) {
         this.board.remove(this);
-    }
-    var collision = this.board.collide(this, OBJECT_PLAYER);
-    if (collision) {
-        console.log("Estoy en un tronco");
-    }
+        }
 }
 
-var Skull = function (centerX, centerY) {
-    this.setup('skull', {
-        frame: 0
-    });
-    this.x = centerX - this.w / 2;
-    this.y = centerY - this.h / 2;
-    this.subFrame = 0;
-};
 
-Skull.prototype = new Sprite();
-
-Skull.prototype.step = function (dt) {};
-
-/**
- * Pantalla de titulo
- * @param {} title Titulo del mensaje
- * @param {} subtitle Subtitulo del mensaje
- * @param {} callback 
- */
-var TitleScreen = function TitleScreen(title, subtitle, callback) {
-
-    // Variables
-  
-    var up = false;
-  
-    // Funciones
-  
-    /**
-     * Funcion step de la pantalla de titulo
-     * @param {} dt
-     */
-    this.step = function (dt) {
-      if (!Game.keys['fire']) up = true;
-      if (up && Game.keys['fire'] && callback) callback();
-    };
-  
-    /**
-     * Funcion draw de la pantalla de titulo
-     * @param {} ctx Contexto
-     */
-    this.draw = function (ctx) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-        ctx.fillRect(0, 0, Game.width, Game.height);
-      ctx.textAlign = "center";
-      ctx.font = "bold 40px bangers";
-      ctx.fillText(title, Game.width / 2, Game.height / 2);
-      ctx.font = "bold 20px bangers";
-      ctx.fillText(subtitle, Game.width / 2, Game.height / 2 + 140);
-    };
-  
-  };
