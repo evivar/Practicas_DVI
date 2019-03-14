@@ -284,7 +284,7 @@ Frog.prototype = new Sprite();
 Frog.prototype.type = OBJECT_PLAYER;
 
 Frog.prototype.step = function (dt) {
-    if (Game.keys['left'] && this.timer == 0) {
+    if (Game.keys['left']) {
         //this.vx = -this.maxVel;
         this.x -= 48;
         this.frame = Math.floor(this.subFrame++/ 3);
@@ -334,15 +334,17 @@ Frog.prototype.step = function (dt) {
                     } else if (this.y > Game.height - this.h) {
                         this.y = Game.height - this.h;
                     }
-                    this.timer -= dt;
-                    if(this.timer == 0){
-                        this.timer = 25;
-                    }
                     var collision = this.board.collide(this, OBJECT_ENEMY);
                     if (collision) {
                         this.board.remove(this);
                         collision.hit();
                     }
+                    var trunkCollision = this.board.collide(this, OBJECT_TRUNK);
+                    if(trunkCollision){
+                        console.log("Estoy en un tronco");
+                        this.vx = trunks.small.A;
+                    }
+                    //this.vx = 0;
                 }
             /*}
         }
