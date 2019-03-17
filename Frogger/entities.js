@@ -322,18 +322,22 @@ Frog.prototype.step = function (dt) {
     if ((this.mov == 'up') && (this.y < this.dy)) {
         this.y = this.dy;
         this.keyPressed = false;
+        this.vy = 0;
     }
     if ((this.mov == 'down') && (this.y > this.dy)) {
         this.y = this.dy;
         this.keyPressed = false;
+        this.vy = 0;
     }
     if ((this.mov == 'left') && (this.x < this.dx)) {
         this.x = this.dx;
         this.keyPressed = false;
+        this.vx = 0;
     }
     if ((this.mov == 'right') && (this.x > this.dx)) {
         this.x = this.dx;
         this.keyPressed = false;
+        this.vx = 0;
     }
     if (this.x < 0) {
         this.x = 0;
@@ -451,6 +455,6 @@ Trunk.prototype.step = function (dt) {
     }
 }
 
-var Water = function(){
-    
+var Water = function () {
+
 }
