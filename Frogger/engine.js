@@ -292,6 +292,27 @@ var GameBoard = function () {
 
 };
 
+var TitleScreen = function TitleScreen(title,subtitle,callback) {
+  var up = false;
+
+  this.step = function(dt) {
+    if( ! Game.keys['fire'] ) up = true;
+    if( up && Game.keys['fire'] && callback ) callback();
+  };
+
+  this.draw = function(ctx) {
+    ctx.fillStyle = "#FFFFFF";
+    draw(ctx, 'title');
+    ctx.textAlign = "center";
+
+    ctx.font = "bold 40px bangers";
+    ctx.fillText(title,Game.width/2,Game.height/2);
+
+    ctx.font = "bold 20px bangers";
+    ctx.fillText(subtitle,Game.width/2,Game.height/2 + 140);
+  };
+};
+
 /**
  * Pinta un mensaje en la esquina
  * @param {} message Mensaje a pintar

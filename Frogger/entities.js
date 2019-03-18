@@ -36,9 +36,9 @@ var sprites = {
     },
     skull: {
         sx: 211,
-        sy: 128,
-        w: 46,
-        h: 35,
+        sy: 123,
+        w: 48,
+        h: 40,
         frames: 4
     },
     medium_trunk: {
@@ -265,6 +265,7 @@ Sprite.prototype.hit = function () {
 var BackgroundGame = function () {
     this.setup('background', {});
     this.x = Game.width / 2 - this.w / 2;
+    console.log(this.x);
     this.y = Game.height - this.h;
 }
 
@@ -358,15 +359,33 @@ Frog.prototype.step = function (dt) {
     if (trunkCollision) {
         this.onTrunk(trunkCollision.vx);
     }
+    else{
+        this.trunked = false;
+    }
+    var waterCollision = this.board.collide(this, OBJECT_WATER);
+    if(waterCollision && !this.trunked){
+        this.sunken();
+        this.board.remove(this);
+    }
 }
 
 Frog.prototype.onTrunk = function (vt) {
     this.vx = vt;
+    this.trunked = true;
 }
 
+Frog.prototype.sunken = function(){
+    if (this.board.remove(this)) {
+        this.board.add(new Death(this.x + this.w / 2,
+            this.y));
+        loseGame();
+    }
+}
 
 Frog.prototype.hit = function () {
     if (this.board.remove(this)) {
+        this.board.add(new Death(this.x + this.w /2 ,
+            this.y + this.h / 2));
         loseGame();
     }
 }
@@ -415,6 +434,8 @@ Car.prototype.step = function (dt) {
 
 Car.prototype.hit = function () {
     if (this.board.remove(this)) {
+        this.board.add(new Death(this.x + this.w / 2,
+            this.y + this.h / 2));
         loseGame();
     }
 }
@@ -456,5 +477,33 @@ Trunk.prototype.step = function (dt) {
 }
 
 var Water = function () {
+    this.setup('water', {});
+    this.x = -9;
+    this.y = 46;
+}
 
+Water.prototype = new Sprite();
+
+Water.prototype.step = function (dt) {}
+
+Water.prototype.type = OBJECT_WATER;
+
+Water.prototype.draw = function(ctx) {}
+
+var Death = function (centerX, centerY) {
+    this.setup('skull', {
+        frame: 0
+    });
+    this.x = centerX - this.w / 2;
+    this.y = centerY - this.h / 2;
+    this.subFrame = 0;
+};
+
+Death.prototype = new Sprite();
+
+Death.prototype.step = function (dt) {
+    this.frame = Math.floor(this.subFrame++/ 3);
+    if (this.subFrame >= 12) {
+        this.board.remove(this);
+    }
 }
