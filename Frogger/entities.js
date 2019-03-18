@@ -128,7 +128,7 @@ var sprites = {
     turtle: {
         sx: 281,
         sy: 344,
-        w: 49,
+        w: 52,
         h: 43,
         frames: 2
     },
