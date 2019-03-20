@@ -152,13 +152,21 @@ var sprites = {
         w: 550,
         h: 240,
         frames: 1
+    },
+    home: {
+        sx: 421,
+        sy: 0,
+        w: 550,
+        h: 49,
+        frames: 1
     }
 }
 
 var OBJECT_PLAYER = 1,
     OBJECT_ENEMY = 2,
     OBJECT_WATER = 4,
-    OBJECT_TRUNK = 8;
+    OBJECT_TRUNK = 8,
+    OBJECT_HOME = 16;
 
 /*
     Utilizamos esta funcion para el movimiento de los enemigos:
@@ -358,14 +366,17 @@ Frog.prototype.step = function (dt) {
     var trunkCollision = this.board.collide(this, OBJECT_TRUNK);
     if (trunkCollision) {
         this.onTrunk(trunkCollision.vx);
-    }
-    else{
+    } else {
         this.trunked = false;
     }
     var waterCollision = this.board.collide(this, OBJECT_WATER);
-    if(waterCollision && !this.trunked){
+    if (waterCollision && !this.trunked) {
         this.sunken();
         this.board.remove(this);
+    }
+    var homeCollision = this.board.collide(this, OBJECT_HOME);
+    if (homeCollision) {
+        winGame();
     }
 }
 
@@ -374,7 +385,7 @@ Frog.prototype.onTrunk = function (vt) {
     this.trunked = true;
 }
 
-Frog.prototype.sunken = function(){
+Frog.prototype.sunken = function () {
     if (this.board.remove(this)) {
         this.board.add(new Death(this.x + this.w / 2,
             this.y));
@@ -384,7 +395,7 @@ Frog.prototype.sunken = function(){
 
 Frog.prototype.hit = function () {
     if (this.board.remove(this)) {
-        this.board.add(new Death(this.x + this.w /2 ,
+        this.board.add(new Death(this.x + this.w / 2,
             this.y + this.h / 2));
         loseGame();
     }
@@ -473,7 +484,7 @@ Trunk.prototype.step = function (dt) {
         this.x < -this.w ||
         this.x > Game.width) {
         this.board.remove(this);
-    }
+    }   
 }
 
 var Water = function () {
@@ -488,7 +499,21 @@ Water.prototype.step = function (dt) {}
 
 Water.prototype.type = OBJECT_WATER;
 
-Water.prototype.draw = function(ctx) {}
+Water.prototype.draw = function (ctx) {}
+
+var Home = function () {
+    this.setup('home', {});
+    this.x = 0;
+    this.y = 0;
+}
+
+Home.prototype = new Sprite();
+
+Home.prototype.step = function (dt) {}
+
+Home.prototype.type = OBJECT_HOME;
+
+Home.prototype.draw = function (ctx) {}
 
 var Death = function (centerX, centerY) {
     this.setup('skull', {
@@ -502,8 +527,8 @@ var Death = function (centerX, centerY) {
 Death.prototype = new Sprite();
 
 Death.prototype.step = function (dt) {
-    this.frame = Math.floor(this.subFrame++/ 3);
-    if (this.subFrame >= 12) {
-        this.board.remove(this);
-    }
-}
+        this.frame = Math.floor(this.subFrame++/ 3);
+            if (this.subFrame >= 12) {
+                this.board.remove(this);
+            }
+        }

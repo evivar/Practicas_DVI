@@ -301,8 +301,7 @@ var TitleScreen = function TitleScreen(title,subtitle,callback) {
   };
 
   this.draw = function(ctx) {
-    ctx.fillStyle = "#FFFFFF";
-    draw(ctx, 'title');
+    ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
 
     ctx.font = "bold 40px bangers";

@@ -2,32 +2,42 @@
 
 // Especifica lo que se debe pintar al cargar el juego
 var startGame = function () {
-    Game.setBoard(0,new TitleScreen("Alien Invasion", 
-                                  "Press fire to start playing",
-                                  playGame));
+    Game.setBoard(0, new BackgroundGame());
+    Game.setBoard(1, new TitleScreen("Frogger",
+        "Press space to start playing",
+        playGame));
 }
 
 var playGame = function () {
     var board = new GameBoard();
     board.add(new Water());
-    Game.setBoard(0, new BackgroundGame());
+    board.add(new Home());
+    //Game.setBoard(0, new BackgroundGame());
     board.add(new Car(cars.blue, {}));
-    board.add(new Car(cars.yellow, {A: 50}));
-    /*board.add(new Car(cars.green, {}));
+    board.add(new Car(cars.yellow, {
+        A: 50
+    }));
+    board.add(new Car(cars.green, {}));
     board.add(new Car(cars.white, {A: 50}));
-    board.add(new Car(cars.brown, {A: -50}));*/
+    board.add(new Car(cars.brown, {A: -50}));
     board.add(new Trunk(trunks.small, {}));
-    board.add(new Trunk(trunks.turtle, {A: 50}));
+    board.add(new Trunk(trunks.turtle, {
+        A: 50
+    }));
     board.add(new Frog());
     Game.setBoard(1, board);
 };
 
 var winGame = function () {
-
+    Game.setBoard(1, new TitleScreen("Frogger",
+        "You Win! Press space to start playing",
+        playGame));
 }
 
 var loseGame = function () {
-    console.log("Has perdido subnormal");
+    Game.setBoard(1, new TitleScreen("Frogger",
+        "Game Over: Press space to start playing",
+        playGame));
 }
 
 // Indica que se llame al método de inicialización una vez
@@ -35,5 +45,5 @@ var loseGame = function () {
 // y este después de realizar la inicialización llamará a
 // startGame
 window.addEventListener("load", function () {
-    Game.initialize("game", sprites, startGame );
+    Game.initialize("game", sprites, startGame);
 });
