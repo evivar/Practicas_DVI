@@ -42,24 +42,24 @@ var sprites = {
         frames: 4
     },
     medium_trunk: {
-        sx: 9,
-        sy: 122,
-        w: 191,
-        h: 41,
+        sx: 0,
+        sy: 116,
+        w: 200,
+        h: 51,
         frames: 1
     },
     large_trunk: {
-        sx: 9,
-        sy: 171,
-        w: 248,
-        h: 191,
+        sx: 0,
+        sy: 163,
+        w: 268,
+        h: 51,
         frames: 1
     },
     small_trunk: {
-        sx: 270,
-        sy: 172,
-        w: 131,
-        h: 39,
+        sx: 260,
+        sy: 173,
+        w: 140,
+        h: 40,
         frames: 1
     },
     leaf: {
@@ -129,7 +129,7 @@ var sprites = {
         sx: 281,
         sy: 344,
         w: 52,
-        h: 43,
+        h: 40,
         frames: 2
     },
     title: {
@@ -225,14 +225,14 @@ var trunks = {
         A: 50
     },
     medium: {
-        x: 485,
-        y: 191,
+        x: -90,
+        y: 47,
         sprite: 'medium_trunk',
         A: 100
     },
     large: {
         x: -90,
-        y: 143, // Para ir mas arriba: 95 y 47
+        y: 95, // Para ir mas arriba: 95 y 47
         sprite: 'large_trunk',
         A: 100
     },
@@ -275,131 +275,80 @@ var BackgroundGame = function () {
     this.x = Game.width / 2 - this.w / 2;
     console.log(this.x);
     this.y = Game.height - this.h;
+    this.y = this.y + 2
+    console.log(this.y);
 }
 
 BackgroundGame.prototype = new Sprite();
 
 BackgroundGame.prototype.step = function (dt) {}
 
-var Frog = function () {
-    this.setup('frog', {});
+var Frog = function() {
+    this.setup('frog', {vx: 0, time: 0.25});
+    this.reload = this.time;
     this.x = Game.width / 2 - this.w / 2;
     this.y = Game.height - this.h;
-    this.dx = this.x;
-    this.dy = this.y;
-    this.trunked = false;
-    this.keyPressed = false;
 }
 
 Frog.prototype = new Sprite();
-
 Frog.prototype.type = OBJECT_PLAYER;
 
-Frog.prototype.step = function (dt) {
-    if ((this.dx == this.x) && (this.dy == this.y) && (!this.keyPressed)) {
-        if (Game.keys['left']) {
-            console.log("L");
-            this.vx = -450;
-            this.dx = this.x - 40;
-            this.mov = 'left';
-            this.keyPressed = true;
-        } else if (Game.keys['right']) {
-            console.log("R");
-            this.vx = 450;
-            this.dx = this.x + 40;
-            this.mov = 'right';
-            this.keyPressed = true;
-        } else if (Game.keys['up']) {
-            console.log("U");
-            this.vy = -450;
-            this.dy = this.y - 48;
-            this.mov = 'up';
-            this.keyPressed = true;
+Frog.prototype.step = function(dt) {
+
+  if(this.board.collide(this,OBJECT_WATER)){
+      if(!this.board.collide(this,OBJECT_TRUNK))
+           this.hit();
+   }
+    // Restamos el tiempo trancurrido
+    this.reload -= dt;
+
+    if (this.reload <= 0) {
+
+        this.x += this.vx * dt;
+        
+        if (Game.keys['up']) {
+            this.reload = this.time;
+            this.y -= 48;
         } else if (Game.keys['down']) {
-            console.log("D");
-            this.vy = 450;
-            this.dy = this.y + 48;
-            this.mov = 'down';
-            this.keyPressed = true;
-        } else if (this.trunked == false) {
-            this.vx = 0;
-            this.vy = 0;
+            this.reload = this.time;
+            this.y += 48;
+        } else if (Game.keys['right'] && this.x + this.w <= Game.width - this.w) {
+            this.reload = this.time;
+            this.x += 40;
+        } else if (Game.keys['left'] && this.x - this.w >= 0) {
+            this.reload = this.time;
+            this.x -= 40;
         }
-    }
-    this.x += this.vx * dt;
-    this.y += this.vy * dt;
-    if ((this.mov == 'up') && (this.y < this.dy)) {
-        this.y = this.dy;
-        this.keyPressed = false;
-        this.vy = 0;
-    }
-    if ((this.mov == 'down') && (this.y > this.dy)) {
-        this.y = this.dy;
-        this.keyPressed = false;
-        this.vy = 0;
-    }
-    if ((this.mov == 'left') && (this.x < this.dx)) {
-        this.x = this.dx;
-        this.keyPressed = false;
-        this.vx = 0;
-    }
-    if ((this.mov == 'right') && (this.x > this.dx)) {
-        this.x = this.dx;
-        this.keyPressed = false;
-        this.vx = 0;
-    }
-    if (this.x < 0) {
-        this.x = 0;
-    } else if (this.x > Game.width - this.w) {
-        this.x = Game.width - this.w
-    }
-    if (this.y < 0) {
-        this.y = 0;
-    } else if (this.y > Game.height - this.h) {
-        this.y = Game.height - this.h
-    }
-    var collision = this.board.collide(this, OBJECT_ENEMY);
-    if (collision) {
-        collision.hit();
-        this.board.remove(this);
-    }
-    var trunkCollision = this.board.collide(this, OBJECT_TRUNK);
-    if (trunkCollision) {
-        this.onTrunk(trunkCollision.vx);
-    } else {
-        this.trunked = false;
-    }
-    var waterCollision = this.board.collide(this, OBJECT_WATER);
-    if (waterCollision && !this.trunked) {
-        this.sunken();
-        this.board.remove(this);
-    }
-    var homeCollision = this.board.collide(this, OBJECT_HOME);
-    if (homeCollision) {
-        winGame();
-    }
-}
 
-Frog.prototype.onTrunk = function (vt) {
-    this.vx = vt;
-    this.trunked = true;
-}
-
-Frog.prototype.sunken = function () {
-    if (this.board.remove(this)) {
-        this.board.add(new Death(this.x + this.w / 2,
-            this.y));
-        loseGame();
+        if (this.y < 0)
+        { 
+            this.y = 0;
+        }
+        else if (this.y > Game.height - this.h){
+         this.y = Game.height - this.h;
+         }
+        if (this.x < 0)
+        { 
+            this.x = 0;
+            
+        }
+        else if (this.x > Game.width - this.w){
+         this.x = Game.width - this.w;
+         }
     }
-}
+    this.vx = 0;
+};
 
-Frog.prototype.hit = function () {
-    if (this.board.remove(this)) {
-        this.board.add(new Death(this.x + this.w / 2,
-            this.y + this.h / 2));
-        loseGame();
-    }
-}
+Frog.prototype.hit = function(damage) {
+  if(this.board.remove(this)) {
+    this.board.add(new Death(this.x, this.y));
+    loseGame();
+  }
+};
+
+Frog.prototype.onObject = function(vObj) {
+  this.vx = vObj;
+};
 
 var Car = function (blueprint, override) {
     this.merge(this.baseParameters);
@@ -484,7 +433,11 @@ Trunk.prototype.step = function (dt) {
         this.x < -this.w ||
         this.x > Game.width) {
         this.board.remove(this);
-    }   
+    }
+    var collision = this.board.collide(this, OBJECT_PLAYER);
+    if(collision){
+        collision.onObject(this.vx);
+    }
 }
 
 var Water = function () {
@@ -509,11 +462,29 @@ var Home = function () {
 
 Home.prototype = new Sprite();
 
-Home.prototype.step = function (dt) {}
+Home.prototype.step = function (dt) {
+    var collision = this.board.collide(this, OBJECT_PLAYER);
+    if(collision){
+        this.board.remove(Frog);
+        winGame();
+    }
+}
 
 Home.prototype.type = OBJECT_HOME;
 
 Home.prototype.draw = function (ctx) {}
+
+var Title = function(){
+    this.setup('title',{
+        frame: 0
+    });
+    this.x = this.w / 2;
+    this.y =  this.h / 2;
+}
+
+Title.prototype = new Sprite();
+
+Title.prototype.step = function() {};
 
 var Death = function (centerX, centerY) {
     this.setup('skull', {
